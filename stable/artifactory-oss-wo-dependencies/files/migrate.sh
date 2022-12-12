@@ -53,7 +53,7 @@ NODE_TYPE_STANDALONE="standalone"
 NODE_TYPE_CLUSTER_NODE="node"
 NODE_TYPE_DATABASE="database"
 
-# External(isable) databases 
+# External(isable) databases
 DATABASE_POSTGRES="POSTGRES"
 DATABASE_ELASTICSEARCH="ELASTICSEARCH"
 DATABASE_RABBITMQ="RABBITMQ"
@@ -96,44 +96,44 @@ RPM_DEB_PROMPT_STANDALONE_POSTGRES_DATA="Type desired $POSTGRES_LABEL home locat
 RPM_DEB_KEY_STANDALONE_POSTGRES_DATA="installer.postgresql.home"
 
 MESSAGE_DATABASE_URL="Provide the database connection details"
-PROMPT_DATABASE_URL(){
+PROMPT_DATABASE_URL() {
     local databaseURlExample=
     case "$PRODUCT_NAME" in
-            $ARTIFACTORY_LABEL)
-                databaseURlExample="jdbc:postgresql://<IP_ADDRESS>:<PORT>/artifactory"
-            ;;
-            $JFMC_LABEL)
-                databaseURlExample="postgresql://<IP_ADDRESS>:<PORT>/mission_control?sslmode=disable"
-            ;;
-            $DISTRIBUTION_LABEL)
-                databaseURlExample="jdbc:postgresql://<IP_ADDRESS>:<PORT>/distribution?sslmode=disable"
-            ;;
-            $XRAY_LABEL)
-                databaseURlExample="postgres://<IP_ADDRESS>:<PORT>/xraydb?sslmode=disable"
-            ;;
-        esac
+    $ARTIFACTORY_LABEL)
+        databaseURlExample="jdbc:postgresql://<IP_ADDRESS>:<PORT>/artifactory"
+        ;;
+    $JFMC_LABEL)
+        databaseURlExample="postgresql://<IP_ADDRESS>:<PORT>/mission_control?sslmode=disable"
+        ;;
+    $DISTRIBUTION_LABEL)
+        databaseURlExample="jdbc:postgresql://<IP_ADDRESS>:<PORT>/distribution?sslmode=disable"
+        ;;
+    $XRAY_LABEL)
+        databaseURlExample="postgres://<IP_ADDRESS>:<PORT>/xraydb?sslmode=disable"
+        ;;
+    esac
     if [ -z "$databaseURlExample" ]; then
         echo -n "$POSTGRES_LABEL URL" # For consistency with username and password
         return
     fi
     echo -n "$POSTGRES_LABEL url. Example: [$databaseURlExample]"
 }
-REGEX_DATABASE_URL(){
+REGEX_DATABASE_URL() {
     local databaseURlExample=
     case "$PRODUCT_NAME" in
-            $ARTIFACTORY_LABEL)
-                databaseURlExample="jdbc:postgresql://.*/artifactory.*"
-            ;;
-            $JFMC_LABEL)
-                databaseURlExample="postgresql://.*/mission_control.*"
-            ;;
-            $DISTRIBUTION_LABEL)
-                databaseURlExample="jdbc:postgresql://.*/distribution.*"
-            ;;
-            $XRAY_LABEL)
-                databaseURlExample="postgres://.*/xraydb.*"
-            ;;
-        esac
+    $ARTIFACTORY_LABEL)
+        databaseURlExample="jdbc:postgresql://.*/artifactory.*"
+        ;;
+    $JFMC_LABEL)
+        databaseURlExample="postgresql://.*/mission_control.*"
+        ;;
+    $DISTRIBUTION_LABEL)
+        databaseURlExample="jdbc:postgresql://.*/distribution.*"
+        ;;
+    $XRAY_LABEL)
+        databaseURlExample="postgres://.*/xraydb.*"
+        ;;
+    esac
     echo -n "^$databaseURlExample\$"
 }
 ERROR_MESSAGE_DATABASE_URL="Invalid $POSTGRES_LABEL URL"
@@ -185,14 +185,13 @@ KEY_RABBITMQ_ACTIVE_NODE_NAME="$SYS_KEY_RABBITMQ_ACTIVE_NODE_NAME"
 PROMPT_RABBITMQ_ACTIVE_NODE_IP="${RABBITMQ_LABEL} active node ip"
 KEY_RABBITMQ_ACTIVE_NODE_IP="$SYS_KEY_RABBITMQ_ACTIVE_NODE_IP"
 
-MESSAGE_JFROGURL(){
+MESSAGE_JFROGURL() {
     echo -e "The JFrog URL allows ${PRODUCT_NAME} to connect to a JFrog Platform Instance.\n(You can copy the JFrog URL from Admin > Security > Settings)"
 }
 PROMPT_JFROGURL="JFrog URL"
 KEY_JFROGURL="$SYS_KEY_SHARED_JFROGURL"
 REGEX_JFROGURL="^https?://.*:{0,}[0-9]{0,4}\$"
 ERROR_MESSAGE_JFROGURL="Invalid JFrog URL"
-
 
 # Set this to FLAG_Y on upgrade
 IS_UPGRADE="${FLAG_N}"
@@ -206,7 +205,7 @@ _getMethodOutputOrVariableValue() {
     local effectiveMessage=
     local result="0"
     # logSilly "Searching for method: [$keyToSearch]"
-    LC_ALL=C type "$keyToSearch" > /dev/null 2>&1 || result="$?"
+    LC_ALL=C type "$keyToSearch" >/dev/null 2>&1 || result="$?"
     if [[ "$result" == "0" ]]; then
         # logSilly "Found method for [$keyToSearch]"
         EFFECTIVE_MESSAGE="$($keyToSearch)"
@@ -219,7 +218,6 @@ _getMethodOutputOrVariableValue() {
     # logSilly "Didn't find method or variable for [$keyToSearch]"
 }
 
-
 # REF https://misc.flogisoft.com/bash/tip_colors_and_formatting
 cClear="\e[0m"
 cBlue="\e[38;5;69m"
@@ -228,41 +226,39 @@ cYellow="\e[1;33m"
 cRedBright="\e[38;5;197m"
 cBold="\e[1m"
 
-
 _loggerGetModeRaw() {
     local MODE="$1"
     case $MODE in
     INFO)
         printf ""
-    ;;
+        ;;
     DEBUG)
         printf "%s" "[${MODE}] "
-    ;;
+        ;;
     WARN)
         printf "${cRedDull}%s%s${cClear}" "[" "${MODE}" "] "
-    ;;
+        ;;
     ERROR)
         printf "${cRedBright}%s%s${cClear}" "[" "${MODE}" "] "
-    ;;
+        ;;
     esac
 }
-
 
 _loggerGetMode() {
     local MODE="$1"
     case $MODE in
     INFO)
         printf "${cBlue}%s%-5s%s${cClear}" "[" "${MODE}" "]"
-    ;;
+        ;;
     DEBUG)
         printf "%-7s" "[${MODE}]"
-    ;;
+        ;;
     WARN)
         printf "${cRedDull}%s%-5s%s${cClear}" "[" "${MODE}" "]"
-    ;;
+        ;;
     ERROR)
         printf "${cRedBright}%s%-5s%s${cClear}" "[" "${MODE}" "]"
-    ;;
+        ;;
     esac
 }
 
@@ -298,7 +294,7 @@ logRaw() {
     echo ""
 }
 
-logBold(){
+logBold() {
     echo ""
     printf "${cBold}$1${cClear}"
     echo ""
@@ -306,7 +302,7 @@ logBold(){
 
 # The date binary works differently based on whether it is GNU/BSD
 is_date_supported=0
-date --version > /dev/null 2>&1 || is_date_supported=1
+date --version >/dev/null 2>&1 || is_date_supported=1
 IS_GNU=$(echo $is_date_supported)
 
 _loggerGetTimestamp() {
@@ -318,17 +314,14 @@ _loggerGetTimestamp() {
 }
 
 # https://www.shellscript.sh/tips/spinner/
-_spin()
-{
+_spin() {
     spinner="/|\\-/|\\-"
-    while :
-    do
-    for i in `seq 0 7`
-    do
-        echo -n "${spinner:$i:1}"
-        echo -en "\010"
-        sleep 1
-    done
+    while :; do
+        for i in $(seq 0 7); do
+            echo -n "${spinner:$i:1}"
+            echo -en "\010"
+            sleep 1
+        done
     done
 }
 
@@ -338,7 +331,7 @@ showSpinner() {
     # Make a note of its Process ID (PID):
     SPIN_PID=$!
     # Kill the spinner on any signal, including our own exit.
-    trap "kill -9 $SPIN_PID" `seq 0 15` &> /dev/null || return 0
+    trap "kill -9 $SPIN_PID" $(seq 0 15) &>/dev/null || return 0
 }
 
 stopSpinner() {
@@ -351,7 +344,7 @@ stopSpinner() {
     fi
 }
 
-_getEffectiveMessage(){
+_getEffectiveMessage() {
     local MESSAGE="$1"
     local MODE=${2-"INFO"}
 
@@ -366,10 +359,10 @@ _getEffectiveMessage(){
         local SERVICE_TYPE="script"
         local TRACE_ID=""
         local THREAD="main"
-        
+
         local CONTEXT_LINE=$(echo "$CONTEXT" | awk '{print $1}')
         local CONTEXT_FILE=$(echo "$CONTEXT" | awk -F"/" '{print $NF}')
-        
+
         _EFFECTIVE_MESSAGE="$(_loggerGetTimestamp) $(_loggerGetServiceType) $(_loggerGetMode $MODE) $(_loggerGetTraceID) $(_loggerGetStackTrace $CONTEXT_FILE $CONTEXT_LINE) $(_loggerGetThread) - $(_loggerGetMessage $MESSAGE)"
     fi
     CONTEXT=
@@ -399,7 +392,7 @@ _logToFile() {
     # chmod 640 $targetFile > /dev/null 2>&1 || true
 
     # Log contents
-    printf "%s\n" "$_EFFECTIVE_MESSAGE" >> "$targetFile" || true
+    printf "%s\n" "$_EFFECTIVE_MESSAGE" >>"$targetFile" || true
 }
 
 logger() {
@@ -412,10 +405,10 @@ logger() {
     _logToFile "$MODE"
 }
 
-logDebug(){
+logDebug() {
     VERBOSE_MODE=${VERBOSE_MODE-"false"}
     CONTEXT=$(caller)
-    if [ "${VERBOSE_MODE}" == "$FLAG_Y" ] || [ "${VERBOSE_MODE}" == "true" ] || [ "${VERBOSE_MODE}" == "debug" ];then
+    if [ "${VERBOSE_MODE}" == "$FLAG_Y" ] || [ "${VERBOSE_MODE}" == "true" ] || [ "${VERBOSE_MODE}" == "debug" ]; then
         logger "$1" "DEBUG"
     else
         logger "$1" "DEBUG" >&6
@@ -423,10 +416,10 @@ logDebug(){
     CONTEXT=
 }
 
-logSilly(){
+logSilly() {
     VERBOSE_MODE=${VERBOSE_MODE-"false"}
     CONTEXT=$(caller)
-    if [ "${VERBOSE_MODE}" == "silly" ];then
+    if [ "${VERBOSE_MODE}" == "silly" ]; then
         logger "$1" "DEBUG"
     else
         logger "$1" "DEBUG" >&6
@@ -440,20 +433,20 @@ logError() {
     CONTEXT=
 }
 
-errorExit () {
+errorExit() {
     CONTEXT=$(caller)
     logger "$1" "ERROR"
     CONTEXT=
     exit 1
 }
 
-warn () {
+warn() {
     CONTEXT=$(caller)
     logger "$1" "WARN"
     CONTEXT=
 }
 
-note () {
+note() {
     CONTEXT=$(caller)
     logger "$1" "NOTE"
     CONTEXT=
@@ -489,20 +482,20 @@ bannerMessge() {
     echo
 }
 
-setRed () {
+setRed() {
     local input="$1"
     echo -e \\033[31m${input}\\033[0m
 }
-setGreen () {
+setGreen() {
     local input="$1"
     echo -e \\033[32m${input}\\033[0m
 }
-setYellow () {
+setYellow() {
     local input="$1"
     echo -e \\033[33m${input}\\033[0m
 }
 
-logger_addLinebreak () {
+logger_addLinebreak() {
     echo -e "---\n"
 }
 
@@ -531,15 +524,15 @@ banner() {
     echo -e "$content"
 }
 
-# The logic below helps us redirect content we'd normally hide to the log file. 
-    #
-    # We have several commands which clutter the console with output and so use 
-    # `cmd > /dev/null` - this redirects the command's output to null.
-    # 
-    # However, the information we just hid maybe useful for support. Using the code pattern
-    # `cmd >&6` (instead of `cmd> >/dev/null` ), the command's output is hidden from the console 
-    # but redirected to the installation log file
-    # 
+# The logic below helps us redirect content we'd normally hide to the log file.
+#
+# We have several commands which clutter the console with output and so use
+# `cmd > /dev/null` - this redirects the command's output to null.
+#
+# However, the information we just hid maybe useful for support. Using the code pattern
+# `cmd >&6` (instead of `cmd> >/dev/null` ), the command's output is hidden from the console
+# but redirected to the installation log file
+#
 
 #Default value of 6 is just null
 exec 6>>/dev/null
@@ -565,10 +558,10 @@ redirectLogsToFile() {
 # Check if a give key contains any sensitive string as part of it
 # Based on the result, the caller can decide its value can be displayed or not
 #   Sample usage : isKeySensitive "${key}" && displayValue="******" || displayValue=${value}
-isKeySensitive(){
+isKeySensitive() {
     local key=$1
     local sensitiveKeys="password|secret|key|token"
-    
+
     if [ -z "${key}" ]; then
         return 1
     else
@@ -577,7 +570,7 @@ isKeySensitive(){
     fi
 }
 
-getPrintableValueOfKey(){
+getPrintableValueOfKey() {
     local displayValue=
     local key="$1"
     if [ -z "$key" ]; then
@@ -591,25 +584,25 @@ getPrintableValueOfKey(){
     echo -n $displayValue
 }
 
-_createConsoleLog(){
+_createConsoleLog() {
     if [ -z "${JF_PRODUCT_HOME}" ]; then
         return
     fi
     local targetFile="${JF_PRODUCT_HOME}/var/log/console.log"
     mkdir -p "${JF_PRODUCT_HOME}/var/log" || true
     if [ ! -f ${targetFile} ]; then
-        touch $targetFile > /dev/null 2>&1 || true
+        touch $targetFile >/dev/null 2>&1 || true
     fi
-    chmod 640 $targetFile > /dev/null 2>&1 || true
+    chmod 640 $targetFile >/dev/null 2>&1 || true
 }
 
-# Output from application's logs are piped to this method. It checks a configuration variable to determine if content should be logged to 
+# Output from application's logs are piped to this method. It checks a configuration variable to determine if content should be logged to
 # the common console.log file
 redirectServiceLogsToFile() {
 
     local result="0"
     # check if the function getSystemValue exists
-    LC_ALL=C type getSystemValue > /dev/null 2>&1 || result="$?"
+    LC_ALL=C type getSystemValue >/dev/null 2>&1 || result="$?"
     if [[ "$result" != "0" ]]; then
         warn "Couldn't find the systemYamlHelper. Skipping log redirection"
         return 0
@@ -618,7 +611,7 @@ redirectServiceLogsToFile() {
     getSystemValue "shared.consoleLog" "NOT_SET"
     if [[ "${YAML_VALUE}" == "false" ]]; then
         logger "Redirection is set to false. Skipping log redirection"
-        return 0;
+        return 0
     fi
 
     if [ -z "${JF_PRODUCT_HOME}" ] || [ "${JF_PRODUCT_HOME}" == "" ]; then
@@ -627,11 +620,11 @@ redirectServiceLogsToFile() {
     fi
 
     local targetFile="${JF_PRODUCT_HOME}/var/log/console.log"
-    
+
     _createConsoleLog
 
     while read -r line; do
-        printf '%s\n' "${line}" >> $targetFile || return 0 # Don't want to log anything - might clutter the screen
+        printf '%s\n' "${line}" >>$targetFile || return 0 # Don't want to log anything - might clutter the screen
     done
 }
 
@@ -657,7 +650,7 @@ displayEnv() {
         return
     fi
 
-    cat << ENV_START_MESSAGE
+    cat <<ENV_START_MESSAGE
 
 ========================
 JF Environment variables
@@ -669,10 +662,10 @@ ENV_START_MESSAGE
         value=$(echo "${entry}" | awk -F'=' '{print $2}')
 
         isKeySensitive "${key}" && value="******" || value=${value}
-        
+
         printf "\n%-35s%s" "${key}" " : ${value}"
     done
-    echo;
+    echo
 }
 
 _addLogRotateConfiguration() {
@@ -682,12 +675,12 @@ _addLogRotateConfiguration() {
     local logFile="$2"
 
     # Method available in _ioOperations.sh
-    LC_ALL=C type io_setYQPath > /dev/null 2>&1 || return 1
+    LC_ALL=C type io_setYQPath >/dev/null 2>&1 || return 1
 
     io_setYQPath
 
     # Method available in _systemYamlHelper.sh
-    LC_ALL=C type getSystemValue > /dev/null 2>&1 || return 1
+    LC_ALL=C type getSystemValue >/dev/null 2>&1 || return 1
 
     local frequency="daily"
     local archiveFolder="archived"
@@ -707,7 +700,8 @@ _addLogRotateConfiguration() {
     logDebug "Adding logrotate configuration for [$logFile] to [$confFile]"
 
     # Add configuration to file
-    local confContent=$(cat << LOGROTATECONF
+    local confContent=$(
+        cat <<LOGROTATECONF
 $logFile {
     $frequency
     missingok
@@ -721,8 +715,8 @@ $logFile {
     size ${sizeOfFile}
 }
 LOGROTATECONF
-) 
-    echo "${confContent}" > ${confFile} || return 1
+    )
+    echo "${confContent}" >${confFile} || return 1
 }
 
 _operationIsBySameUser() {
@@ -732,14 +726,14 @@ _operationIsBySameUser() {
 
     if [ $currentUserID == $targetUser ] || [ $currentUserName == $targetUser ]; then
         echo -n "yes"
-    else   
+    else
         echo -n "no"
     fi
 }
 
 _addCronJobForLogrotate() {
     logDebug "Method ${FUNCNAME[0]}"
-    
+
     # Abort if logrotate is not available
     [ "$(io_commandExists 'crontab')" != "yes" ] && warn "cron is not available" && return 1
 
@@ -757,8 +751,8 @@ _addCronJobForLogrotate() {
     fi
     local cmd="$logrotateBinary ${confFile} --state $productHome/var/etc/logrotate/logrotate-state" #--verbose
 
-    id -u $cronJobOwner > /dev/null 2>&1 || { warn "User $cronJobOwner does not exist. Aborting logrotate configuration" && return 1; }
-    
+    id -u $cronJobOwner >/dev/null 2>&1 || { warn "User $cronJobOwner does not exist. Aborting logrotate configuration" && return 1; }
+
     # Remove the existing line
     removeLogRotation "$productHome" "$cronJobOwner" || true
 
@@ -769,9 +763,15 @@ _addCronJobForLogrotate() {
 
     # If this is standalone mode, we cannot use -u - the user running this process may not have the necessary privileges
     if [ "$standaloneMode" == "no" ]; then
-        (crontab -l -u $cronJobOwner 2>/dev/null; echo "$cronInterval") | crontab -u $cronJobOwner -
+        (
+            crontab -l -u $cronJobOwner 2>/dev/null
+            echo "$cronInterval"
+        ) | crontab -u $cronJobOwner -
     else
-        (crontab -l 2>/dev/null; echo "$cronInterval") | crontab -
+        (
+            crontab -l 2>/dev/null
+            echo "$cronInterval"
+        ) | crontab -
     fi
 }
 
@@ -793,7 +793,7 @@ configureLogRotation() {
     if [ -z $productName ]; then
         warn "Incorrect usage. A product name is necessary for configuring log rotation" && return 1
     fi
-    
+
     local productHome="$2"
     if [ -z $productHome ]; then
         warn "Incorrect usage. A product home folder is necessary for configuring log rotation" && return 1
@@ -804,7 +804,7 @@ configureLogRotation() {
         logger "Log rotation for [$logFile] has not been configured. Please setup manually"
         return 0
     fi
-    
+
     local userID="$3"
     if [ -z $userID ]; then
         warn "Incorrect usage. A userID is necessary for configuring log rotation" && return 1
@@ -814,7 +814,7 @@ configureLogRotation() {
     local logConfigOwner=${5:-$userID}
 
     logDebug "Configuring log rotation as user [$userID], group [$groupID], effective cron User [$logConfigOwner]"
-    
+
     local errorMessage="Could not configure logrotate. Please configure log rotation of the file: [$logFile] manually"
 
     local confFile="${productHome}/var/etc/logrotate/logrotate.conf"
@@ -824,9 +824,9 @@ configureLogRotation() {
     createDir "${productHome}/var" "$userID" "$groupID" || { warn "${errorMessage}" && return 1; }
     createDir "${productHome}/var/log" "$userID" "$groupID" || { warn "${errorMessage}" && return 1; }
     createDir "${productHome}/var/log/archived" "$userID" "$groupID" || { warn "${errorMessage}" && return 1; }
-    
+
     # TODO move to recursive method
-    createDir "${productHome}/var/etc"  "$userID" "$groupID" || { warn "${errorMessage}" && return 1; }
+    createDir "${productHome}/var/etc" "$userID" "$groupID" || { warn "${errorMessage}" && return 1; }
     createDir "${productHome}/var/etc/logrotate" "$logConfigOwner" || { warn "${errorMessage}" && return 1; }
 
     # conf file should be owned by the user running the script
@@ -838,7 +838,7 @@ configureLogRotation() {
 
 _pauseExecution() {
     if [ "${VERBOSE_MODE}" == "debug" ]; then
-        
+
         local breakPoint="$1"
         if [ ! -z "$breakPoint" ]; then
             printf "${cBlue}Breakpoint${cClear} [$breakPoint] "
@@ -862,7 +862,7 @@ removeLogRotation() {
     local standaloneMode=$(_operationIsBySameUser "$cronJobOwner")
 
     local confFile="${productHome}/var/etc/logrotate/logrotate.conf"
-    
+
     if [ "$standaloneMode" == "no" ]; then
         crontab -l -u $cronJobOwner 2>/dev/null | grep -v "$confFile" | crontab -u $cronJobOwner -
     else
@@ -900,7 +900,7 @@ isRunningInsideAContainer() {
         echo -n "$FLAG_Y"
     else
         echo -n "$FLAG_N"
-    fi 
+    fi
 }
 
 POSTGRES_USER=999
@@ -914,7 +914,7 @@ LOG_FILE_PERMISSION=640
 PID_FILE_PERMISSION=644
 
 # Copy file
-copyFile(){
+copyFile() {
     local source=$1
     local target=$2
     local mode=${3:-overwrite}
@@ -925,13 +925,13 @@ copyFile(){
         verboseFlag="-v"
     fi
 
-    if [[ ! ( $source && $target ) ]]; then
+    if [[ ! ($source && $target) ]]; then
         warn "Source and target is mandatory to copy file"
         return 1
     fi
 
     if [[ -f "${target}" ]]; then
-        [[ "$mode" = "overwrite" ]] && ( cp ${verboseFlag} -f "$source" "$target" || errorExit "Unable to copy file, command : cp -f ${source} ${target}") || true
+        [[ "$mode" = "overwrite" ]] && (cp ${verboseFlag} -f "$source" "$target" || errorExit "Unable to copy file, command : cp -f ${source} ${target}") || true
     else
         cp ${verboseFlag} -f "$source" "$target" || errorExit "Unable to copy file, command : cp -f ${source} ${target}"
     fi
@@ -940,7 +940,7 @@ copyFile(){
 # Copy files recursively from given source directory to destination directory
 # This method wil copy but will NOT overwrite
 # Destination will be created if its not available
-copyFilesNoOverwrite(){
+copyFilesNoOverwrite() {
     local src=$1
     local dest=$2
     local enableVerboseCopy="${3:-${FLAG_Y}}"
@@ -953,9 +953,9 @@ copyFilesNoOverwrite(){
         local relativeFilePath=""
         local targetFilePath=""
 
-        for file in $(find ${src} -type f 2>/dev/null) ; do
-            # Derive relative path and attach it to destination 
-            # Example : 
+        for file in $(find ${src} -type f 2>/dev/null); do
+            # Derive relative path and attach it to destination
+            # Example :
             #       src=/extra_config
             #       dest=/var/opt/jfrog/artifactory/etc
             #       file=/extra_config/config.xml
@@ -967,12 +967,12 @@ copyFilesNoOverwrite(){
             createDir "$(dirname "$targetFilePath")"
             copyFile "${file}" "${targetFilePath}" "no_overwrite" "${enableVerboseCopy}"
         done
-    fi    
+    fi
 }
 
 #    TODO : WINDOWS ?
 #  Check the max open files and open processes set on the system
-checkULimits () {
+checkULimits() {
     local minMaxOpenFiles=${1:-32000}
     local minMaxOpenProcesses=${2:-1024}
     local setValue=${3:-true}
@@ -1009,11 +1009,10 @@ createDirs() {
     local serviceName=$2
     local folders="backup bootstrap data etc logs work"
 
-    [ -z "${appDataDir}" ]  && errorExit "An application directory is mandatory to create its data structure"  || true
-    [ -z "${serviceName}" ] && errorExit "A service name is mandatory to create service data structure"         || true
+    [ -z "${appDataDir}" ] && errorExit "An application directory is mandatory to create its data structure" || true
+    [ -z "${serviceName}" ] && errorExit "A service name is mandatory to create service data structure" || true
 
-    for folder in ${folders}
-    do
+    for folder in ${folders}; do
         folder=${appDataDir}/${folder}/${serviceName}
         if [ ! -d "${folder}" ]; then
             logger "Creating folder : ${folder}"
@@ -1022,8 +1021,7 @@ createDirs() {
     done
 }
 
-
-testReadWritePermissions () {
+testReadWritePermissions() {
     local dir_to_check=$1
     local error=false
 
@@ -1032,9 +1030,9 @@ testReadWritePermissions () {
     local test_file=${dir_to_check}/test-permissions
 
     # Write file
-    if echo test > ${test_file} 1> /dev/null 2>&1; then
+    if echo test >${test_file} 1>/dev/null 2>&1; then
         # Write succeeded. Testing read...
-        if cat ${test_file} > /dev/null; then
+        if cat ${test_file} >/dev/null; then
             rm -f ${test_file}
         else
             error=true
@@ -1051,11 +1049,11 @@ testReadWritePermissions () {
 }
 
 # Test directory has read/write permissions for current user
-testDirectoryPermissions () {
+testDirectoryPermissions() {
     local dir_to_check=$1
     local error=false
 
-    [ -d ${dir_to_check}  ] || errorExit "'${dir_to_check}' is not a directory"
+    [ -d ${dir_to_check} ] || errorExit "'${dir_to_check}' is not a directory"
 
     local u_id=$(id -u)
     local id_str="id ${u_id}"
@@ -1092,7 +1090,7 @@ testDirectoryPermissions () {
 #
 # Usage:
 # createRecursiveDir "/opt/jfrog/product/var" "bootstrap tomcat lib" "user_name" "group_name"
-createRecursiveDir(){
+createRecursiveDir() {
     local rootDir=$1
     local pathDirs=$2
     local user=$3
@@ -1124,12 +1122,12 @@ createRecursiveDir(){
 # Updates global: none
 # Returns: NA
 
-createDir(){
+createDir() {
     local dirName="$1"
     local printMessage=no
     logSilly "Method ${FUNCNAME[0]} invoked with [$dirName]"
     [ -z "${dirName}" ] && return
-    
+
     logDebug "Attempting to create ${dirName}"
     mkdir -p "${dirName}" || errorExit "Unable to create directory: [${dirName}]"
     local userID="$2"
@@ -1137,8 +1135,8 @@ createDir(){
 
     # If UID/GID is passed, chown the folder
     if [ ! -z "$userID" ] && [ ! -z "$groupID" ]; then
-        # Earlier, this line would have returned 1 if it failed. Now it just warns. 
-        # This is intentional. Earlier, this line would NOT be reached if the folder already existed. 
+        # Earlier, this line would have returned 1 if it failed. Now it just warns.
+        # This is intentional. Earlier, this line would NOT be reached if the folder already existed.
         # Since it will always come to this line and the script may be running as a non-root user, this method will just warn if
         # setting permissions fails (so as to not affect any existing flows)
         io_setOwnershipNonRecursive "$dirName" "$userID" "$groupID" || warn "Could not set owner of [$dirName] to [$userID:$groupID]"
@@ -1150,7 +1148,7 @@ createDir(){
     fi
 }
 
-removeSoftLinkAndCreateDir () {
+removeSoftLinkAndCreateDir() {
     local dirName="$1"
     local userID="$2"
     local groupID="$3"
@@ -1160,7 +1158,7 @@ removeSoftLinkAndCreateDir () {
 }
 
 # Utility method to remove a soft link
-removeSoftLink () {
+removeSoftLink() {
     local dirName="$1"
     if [[ -L "${dirName}" ]]; then
         targetLink=$(readlink -f "${dirName}")
@@ -1170,12 +1168,11 @@ removeSoftLink () {
 }
 
 # Check Directory exist in the path
-checkDirExists () {
+checkDirExists() {
     local directoryPath="$1"
 
     [[ -d "${directoryPath}" ]] && echo -n "true" || echo -n "false"
 }
-
 
 # Utility method to create a file
 # Failure conditions:
@@ -1185,7 +1182,7 @@ checkDirExists () {
 # Updates global: none
 # Returns: NA
 
-createFile(){
+createFile() {
     local fileName="$1"
     logSilly "Method ${FUNCNAME[0]} [$fileName]"
     [ -f "${fileName}" ] && return 0
@@ -1202,7 +1199,7 @@ createFile(){
 
 # Check File exist in the filePath
 # IMPORTANT- DON'T ADD LOGGING to this method
-checkFileExists () {
+checkFileExists() {
     local filePath="$1"
 
     [[ -f "${filePath}" ]] && echo -n "true" || echo -n "false"
@@ -1210,7 +1207,7 @@ checkFileExists () {
 
 # Check for directories contains any (files or sub directories)
 # IMPORTANT- DON'T ADD LOGGING to this method
-checkDirContents () {
+checkDirContents() {
     local directoryPath="$1"
     if [[ "$(ls -1 "${directoryPath}" | wc -l)" -gt 0 ]]; then
         echo -n "true"
@@ -1221,7 +1218,7 @@ checkDirContents () {
 
 # Check contents exist in directory
 # IMPORTANT- DON'T ADD LOGGING to this method
-checkContentExists () {
+checkContentExists() {
     local source="$1"
 
     if [[ "$(checkDirContents "${source}")" != "true" ]]; then
@@ -1233,7 +1230,7 @@ checkContentExists () {
 
 # Resolve the variable
 # IMPORTANT- DON'T ADD LOGGING to this method
-evalVariable () {
+evalVariable() {
     local output="$1"
     local input="$2"
 
@@ -1255,7 +1252,6 @@ io_commandExists() {
 io_curlExists() {
     io_commandExists "curl"
 }
-
 
 io_hasMatch() {
     logSilly "Method ${FUNCNAME[0]}"
@@ -1281,27 +1277,27 @@ io_getIsLocalhost() {
 
     io_hasMatch "$inputString" "localhost" && {
         logDebug "Found localhost. Returning [$FLAG_Y]"
-        IS_LOCALHOST="$FLAG_Y" && return;
+        IS_LOCALHOST="$FLAG_Y" && return
     } || logDebug "Did not find match for localhost"
-    
+
     local hostIP=$(io_getPublicHostIP)
     io_hasMatch "$inputString" "$hostIP" && {
         logDebug "Found $hostIP. Returning [$FLAG_Y]"
-        IS_LOCALHOST="$FLAG_Y" && return;
+        IS_LOCALHOST="$FLAG_Y" && return
     } || logDebug "Did not find match for $hostIP"
-    
+
     local hostID=$(io_getPublicHostID)
     io_hasMatch "$inputString" "$hostID" && {
         logDebug "Found $hostID. Returning [$FLAG_Y]"
-        IS_LOCALHOST="$FLAG_Y" && return;
+        IS_LOCALHOST="$FLAG_Y" && return
     } || logDebug "Did not find match for $hostID"
-    
+
     local hostName=$(io_getPublicHostName)
-    io_hasMatch  "$inputString" "$hostName" && {
+    io_hasMatch "$inputString" "$hostName" && {
         logDebug "Found $hostName. Returning [$FLAG_Y]"
-        IS_LOCALHOST="$FLAG_Y" && return;
+        IS_LOCALHOST="$FLAG_Y" && return
     } || logDebug "Did not find match for $hostName"
-    
+
 }
 
 # Usage: if [ "$(io_tarExists)" != "yes" ]
@@ -1362,20 +1358,19 @@ io_backupFile() {
 # Reference https://stackoverflow.com/questions/4023830/how-to-compare-two-strings-in-dot-separated-version-format-in-bash/4025065#4025065
 is_number() {
     case "$BASH_VERSION" in
-        3.1.*)
-            PATTERN='\^\[0-9\]+\$'
-            ;;
-        *)
-            PATTERN='^[0-9]+$'
-            ;;
+    3.1.*)
+        PATTERN='\^\[0-9\]+\$'
+        ;;
+    *)
+        PATTERN='^[0-9]+$'
+        ;;
     esac
 
     [[ "$1" =~ $PATTERN ]]
 }
 
 io_compareVersions() {
-    if [[ $# != 2 ]]
-    then
+    if [[ $# != 2 ]]; then
         echo "Usage: min_version current minimum"
         return
     fi
@@ -1383,12 +1378,10 @@ io_compareVersions() {
     A="${1%%.*}"
     B="${2%%.*}"
 
-    if [[ "$A" != "$1" && "$B" != "$2" && "$A" == "$B" ]]
-    then
+    if [[ "$A" != "$1" && "$B" != "$2" && "$A" == "$B" ]]; then
         io_compareVersions "${1#*.}" "${2#*.}"
     else
-        if is_number "$A" && is_number "$B"
-        then
+        if is_number "$A" && is_number "$B"; then
             if [[ "$A" -eq "$B" ]]; then
                 echo "0"
             elif [[ "$A" -gt "$B" ]]; then
@@ -1414,7 +1407,7 @@ io_trim() {
 
 # temporary function will be removing it ASAP
 # search for string and replace text in file
-replaceText_migration_hook () {
+replaceText_migration_hook() {
     local regexString="$1"
     local replaceText="$2"
     local file="$3"
@@ -1430,7 +1423,7 @@ replaceText_migration_hook () {
 }
 
 # search for string and replace text in file
-replaceText () {
+replaceText() {
     local regexString="$1"
     local replaceText="$2"
     local file="$3"
@@ -1447,7 +1440,7 @@ replaceText () {
 }
 
 # search for string and prepend text in file
-prependText () {
+prependText() {
     local regexString="$1"
     local text="$2"
     local file="$3"
@@ -1463,7 +1456,7 @@ prependText () {
 }
 
 # add text to beginning of the file
-addText () {
+addText() {
     local text="$1"
     local file="$2"
 
@@ -1477,7 +1470,7 @@ addText () {
     fi
 }
 
-io_replaceString () {
+io_replaceString() {
     local value="$1"
     local firstString="$2"
     local secondString="$3"
@@ -1504,17 +1497,16 @@ _findYQ() {
     fi
 }
 
-
 io_setYQPath() {
     # logSilly "Method ${FUNCNAME[0]}" (Intentionally not logging. Does not add value)
     if [ "$(io_commandExists 'yq')" == "yes" ]; then
         return
     fi
-    
+
     if [ ! -z "${JF_PRODUCT_HOME}" ] && [ -d "${JF_PRODUCT_HOME}" ]; then
         _findYQ "${JF_PRODUCT_HOME}"
     fi
-    
+
     if [ -z "${YQ_PATH}" ] && [ ! -z "${COMPOSE_HOME}" ] && [ -d "${COMPOSE_HOME}" ]; then
         _findYQ "${COMPOSE_HOME}"
     fi
@@ -1522,7 +1514,7 @@ io_setYQPath() {
     if [ -z "${YQ_PATH}" ] && [ ! -z "${SCRIPT_HOME}" ] && [ -d "${SCRIPT_HOME}" ]; then
         _findYQ "${SCRIPT_HOME}"
     fi
-    
+
 }
 
 io_getLinuxDistribution() {
@@ -1559,19 +1551,19 @@ io_getLinuxDistribution() {
 
 ## Utility method to check ownership of folders/files
 ## Failure conditions:
-    ## If invoked with incorrect inputs - FATAL
-    ## If file is not owned by the user & group
+## If invoked with incorrect inputs - FATAL
+## If file is not owned by the user & group
 ## Parameters:
-    ## user
-    ## group
-    ## folder to chown    
+## user
+## group
+## folder to chown
 ## Globals: none
 ## Returns: none
 ## NOTE: The method does NOTHING if the OS is Mac
-io_checkOwner () {
+io_checkOwner() {
     logSilly "Method ${FUNCNAME[0]}"
     local osType=$(uname)
-    
+
     if [ "${osType}" != "Linux" ]; then
         logDebug "Unsupported OS. Skipping check"
         return 0
@@ -1579,7 +1571,6 @@ io_checkOwner () {
 
     local file_to_check=$1
     local user_id_to_check=$2
-    
 
     if [ -z "$user_id_to_check" ] || [ -z "$file_to_check" ]; then
         errorExit "Invalid invocation of method. Missing mandatory inputs"
@@ -1593,15 +1584,15 @@ io_checkOwner () {
     local stat=
 
     if [ "${check_user_name}" == "yes" ]; then
-        stat=( $(stat -Lc "%U %G" ${file_to_check}) )
+        stat=($(stat -Lc "%U %G" ${file_to_check}))
     else
-        stat=( $(stat -Lc "%u %g" ${file_to_check}) )
+        stat=($(stat -Lc "%u %g" ${file_to_check}))
     fi
 
     local user_id=${stat[0]}
     local group_id=${stat[1]}
 
-    if [[ "${user_id}" != "${user_id_to_check}" ]] || [[ "${group_id}" != "${group_id_to_check}" ]] ; then
+    if [[ "${user_id}" != "${user_id_to_check}" ]] || [[ "${group_id}" != "${group_id_to_check}" ]]; then
         logDebug "Ownership mismatch. [${file_to_check}] is not owned by [${user_id_to_check}:${group_id_to_check}]"
         return 1
     else
@@ -1611,18 +1602,18 @@ io_checkOwner () {
 
 ## Utility method to change ownership of a file/folder - NON recursive
 ## Failure conditions:
-    ## If invoked with incorrect inputs - FATAL
-    ## If chown operation fails - returns 1
-## Parameters: 
-    ## user
-    ## group
-    ## file to chown    
+## If invoked with incorrect inputs - FATAL
+## If chown operation fails - returns 1
+## Parameters:
+## user
+## group
+## file to chown
 ## Globals: none
 ## Returns: none
 ## NOTE: The method does NOTHING if the OS is Mac
 
 io_setOwnershipNonRecursive() {
-    
+
     local osType=$(uname)
     if [ "${osType}" != "Linux" ]; then
         return
@@ -1640,22 +1631,22 @@ io_setOwnershipNonRecursive() {
     chown ${user}:${group} ${targetFile} || return 1
 }
 
-## Utility method to change ownership of a file. 
-## IMPORTANT 
+## Utility method to change ownership of a file.
+## IMPORTANT
 ## If being called on a folder, should ONLY be called for fresh folders or may cause performance issues
 ## Failure conditions:
-    ## If invoked with incorrect inputs - FATAL
-    ## If chown operation fails - returns 1
-## Parameters: 
-    ## user
-    ## group
-    ## file to chown    
+## If invoked with incorrect inputs - FATAL
+## If chown operation fails - returns 1
+## Parameters:
+## user
+## group
+## file to chown
 ## Globals: none
 ## Returns: none
 ## NOTE: The method does NOTHING if the OS is Mac
 
 io_setOwnership() {
-    
+
     local osType=$(uname)
     if [ "${osType}" != "Linux" ]; then
         return
@@ -1688,7 +1679,7 @@ io_createPostgresDir() {
     logDebug "Property [${POSTGRESQL_DATA_ROOT}] exists. Proceeding"
 
     createDir "${POSTGRESQL_DATA_ROOT}/data"
-    io_setOwnership  "${POSTGRESQL_DATA_ROOT}" "${POSTGRES_USER}" "${POSTGRES_USER}" || errorExit "Setting ownership of [${POSTGRESQL_DATA_ROOT}] to [${POSTGRES_USER}:${POSTGRES_USER}] failed"
+    io_setOwnership "${POSTGRESQL_DATA_ROOT}" "${POSTGRES_USER}" "${POSTGRES_USER}" || errorExit "Setting ownership of [${POSTGRESQL_DATA_ROOT}] to [${POSTGRES_USER}:${POSTGRES_USER}] failed"
 }
 
 ## Utility method to create third party folder structure necessary for Nginx
@@ -1706,7 +1697,7 @@ io_createNginxDir() {
     logDebug "Property [${NGINX_DATA_ROOT}] exists. Proceeding"
 
     createDir "${NGINX_DATA_ROOT}"
-    io_setOwnership  "${NGINX_DATA_ROOT}" "${NGINX_USER}" "${NGINX_GROUP}" || errorExit "Setting ownership of [${NGINX_DATA_ROOT}] to [${NGINX_USER}:${NGINX_GROUP}] failed"
+    io_setOwnership "${NGINX_DATA_ROOT}" "${NGINX_USER}" "${NGINX_GROUP}" || errorExit "Setting ownership of [${NGINX_DATA_ROOT}] to [${NGINX_USER}:${NGINX_GROUP}] failed"
 }
 
 ## Utility method to create third party folder structure necessary for ElasticSearch
@@ -1724,7 +1715,7 @@ io_createElasticSearchDir() {
     logDebug "Property [${ELASTIC_DATA_ROOT}] exists. Proceeding"
 
     createDir "${ELASTIC_DATA_ROOT}/data"
-    io_setOwnership  "${ELASTIC_DATA_ROOT}" "${ES_USER}" "${ES_USER}" || errorExit "Setting ownership of [${ELASTIC_DATA_ROOT}] to [${ES_USER}:${ES_USER}] failed"
+    io_setOwnership "${ELASTIC_DATA_ROOT}" "${ES_USER}" "${ES_USER}" || errorExit "Setting ownership of [${ELASTIC_DATA_ROOT}] to [${ES_USER}:${ES_USER}] failed"
 }
 
 ## Utility method to create third party folder structure necessary for Redis
@@ -1742,7 +1733,7 @@ io_createRedisDir() {
     logDebug "Property [${REDIS_DATA_ROOT}] exists. Proceeding"
 
     createDir "${REDIS_DATA_ROOT}"
-    io_setOwnership  "${REDIS_DATA_ROOT}" "${REDIS_USER}" "${REDIS_USER}" || errorExit "Setting ownership of [${REDIS_DATA_ROOT}] to [${REDIS_USER}:${REDIS_USER}] failed"
+    io_setOwnership "${REDIS_DATA_ROOT}" "${REDIS_USER}" "${REDIS_USER}" || errorExit "Setting ownership of [${REDIS_DATA_ROOT}] to [${REDIS_USER}:${REDIS_USER}] failed"
 }
 
 ## Utility method to create third party folder structure necessary for Mongo
@@ -1762,7 +1753,7 @@ io_createMongoDir() {
     createDir "${MONGODB_DATA_ROOT}/logs"
     createDir "${MONGODB_DATA_ROOT}/configdb"
     createDir "${MONGODB_DATA_ROOT}/db"
-    io_setOwnership  "${MONGODB_DATA_ROOT}" "${MONGO_USER}" "${MONGO_USER}" || errorExit "Setting ownership of [${MONGODB_DATA_ROOT}] to [${MONGO_USER}:${MONGO_USER}] failed"
+    io_setOwnership "${MONGODB_DATA_ROOT}" "${MONGO_USER}" "${MONGO_USER}" || errorExit "Setting ownership of [${MONGODB_DATA_ROOT}] to [${MONGO_USER}:${MONGO_USER}] failed"
 }
 
 ## Utility method to create third party folder structure necessary for RabbitMQ
@@ -1780,7 +1771,7 @@ io_createRabbitMQDir() {
     logDebug "Property [${RABBITMQ_DATA_ROOT}] exists. Proceeding"
 
     createDir "${RABBITMQ_DATA_ROOT}"
-    io_setOwnership  "${RABBITMQ_DATA_ROOT}" "${RABBITMQ_USER}" "${RABBITMQ_USER}" || errorExit "Setting ownership of [${RABBITMQ_DATA_ROOT}] to [${RABBITMQ_USER}:${RABBITMQ_USER}] failed"
+    io_setOwnership "${RABBITMQ_DATA_ROOT}" "${RABBITMQ_USER}" "${RABBITMQ_USER}" || errorExit "Setting ownership of [${RABBITMQ_DATA_ROOT}] to [${RABBITMQ_USER}:${RABBITMQ_USER}] failed"
 }
 
 # Add or replace a property in provided properties file
@@ -1791,29 +1782,29 @@ addOrReplaceProperty() {
     local delimiter=${4:-"="}
 
     # Return if any of the inputs are empty
-    [[ -z "$propertyName"   || "$propertyName"   == "" ]] && return
-    [[ -z "$propertyValue"  || "$propertyValue"  == "" ]] && return
+    [[ -z "$propertyName" || "$propertyName" == "" ]] && return
+    [[ -z "$propertyValue" || "$propertyValue" == "" ]] && return
     [[ -z "$propertiesPath" || "$propertiesPath" == "" ]] && return
 
-    grep "^${propertyName}\s*${delimiter}.*$" ${propertiesPath} > /dev/null 2>&1
-    [ $? -ne 0 ] && echo -e "\n${propertyName}${delimiter}${propertyValue}" >> ${propertiesPath}
+    grep "^${propertyName}\s*${delimiter}.*$" ${propertiesPath} >/dev/null 2>&1
+    [ $? -ne 0 ] && echo -e "\n${propertyName}${delimiter}${propertyValue}" >>${propertiesPath}
     sed -i -e "s|^${propertyName}\s*${delimiter}.*$|${propertyName}${delimiter}${propertyValue}|g;" ${propertiesPath}
 }
 
 # Set property only if its not set
-io_setPropertyNoOverride(){
+io_setPropertyNoOverride() {
     local propertyName=$1
     local propertyValue=$2
     local propertiesPath=$3
 
     # Return if any of the inputs are empty
-    [[ -z "$propertyName"   || "$propertyName"   == "" ]] && return
-    [[ -z "$propertyValue"  || "$propertyValue"  == "" ]] && return
+    [[ -z "$propertyName" || "$propertyName" == "" ]] && return
+    [[ -z "$propertyValue" || "$propertyValue" == "" ]] && return
     [[ -z "$propertiesPath" || "$propertiesPath" == "" ]] && return
 
-    grep "^${propertyName}:" ${propertiesPath} > /dev/null 2>&1
+    grep "^${propertyName}:" ${propertiesPath} >/dev/null 2>&1
     if [ $? -ne 0 ]; then
-        echo -e "${propertyName}: ${propertyValue}" >> ${propertiesPath} || warn "Setting property ${propertyName}: ${propertyValue} in [ ${propertiesPath} ] failed"
+        echo -e "${propertyName}: ${propertyValue}" >>${propertiesPath} || warn "Setting property ${propertyName}: ${propertyValue} in [ ${propertiesPath} ] failed"
     else
         logger "Skipping update of property : ${propertyName}" >&6
     fi
@@ -1825,24 +1816,24 @@ addLine() {
     local target_file=$2
     logger "Trying to add line $1 to $2" >&6 2>&1
     cat "$target_file" | grep -F "$line_to_add" -wq >&6 2>&1
-    if [ $? != 0  ]; then
+    if [ $? != 0 ]; then
         logger "Line does not exist and will be added" >&6 2>&1
-        echo $line_to_add >> $target_file || errorExit "Could not update $target_file"
-    fi    
+        echo $line_to_add >>$target_file || errorExit "Could not update $target_file"
+    fi
 }
 
 # Utility method to check if a value (first parameter) exists in an array (2nd parameter)
 # 1st parameter "value to find"
 # 2nd parameter "The array to search in. Please pass a string with each value separated by space"
 # Example: containsElement "y" "y Y n N"
-containsElement () {
+containsElement() {
     local searchElement=$1
     local searchArray=($2)
     local found=1
-    for elementInIndex in "${searchArray[@]}";do
-    if [[ $elementInIndex == $searchElement ]]; then
-        found=0
-    fi
+    for elementInIndex in "${searchArray[@]}"; do
+        if [[ $elementInIndex == $searchElement ]]; then
+            found=0
+        fi
     done
     return $found
 }
@@ -1852,7 +1843,7 @@ containsElement () {
 # 2nd parameter "what choices to accept, separated by spaces"
 # 3rd parameter "what is the default choice (to use if the user simply presses Enter)"
 # Example 'getUserChoice "Are you feeling lucky? Punk!" "y n Y N" "y"'
-getUserChoice(){
+getUserChoice() {
     configureLogOutput
     read_timeout=${read_timeout:-0.5}
     local choice="na"
@@ -1862,9 +1853,10 @@ getUserChoice(){
     users_choice=
 
     until containsElement "$choice" "$choices"; do
-        echo "";echo "";
+        echo ""
+        echo ""
         sleep $read_timeout #This ensures correct placement of the question.
-        read -p  "$text_to_display :" choice
+        read -p "$text_to_display :" choice
         : ${choice:=$default_choice}
     done
     users_choice=$choice
@@ -1872,18 +1864,20 @@ getUserChoice(){
     sleep $read_timeout #This ensures correct logging
 }
 
-setFilePermission () {
+setFilePermission() {
     local permission=$1
     local file=$2
     chmod "${permission}" "${file}" || warn "Setting permission ${permission} to file [ ${file} ] failed"
 }
 
-
 #setting required paths
-setAppDir (){
+setAppDir() {
     SCRIPT_DIR=$(dirname $0)
     SCRIPT_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-    APP_DIR="`cd "${SCRIPT_HOME}";pwd`"
+    APP_DIR="$(
+        cd "${SCRIPT_HOME}"
+        pwd
+    )"
 }
 
 ZIP_TYPE="zip"
@@ -1892,7 +1886,7 @@ HELM_TYPE="helm"
 RPM_TYPE="rpm"
 DEB_TYPE="debian"
 
-sourceScript () {
+sourceScript() {
     local file="$1"
 
     [ ! -z "${file}" ] || errorExit "target file is not passed to source a file"
@@ -1904,7 +1898,7 @@ sourceScript () {
     fi
 }
 # Source required helpers
-initHelpers () {
+initHelpers() {
     local systemYamlHelper="${APP_DIR}/systemYamlHelper.sh"
     local thirdPartyDir=$(find ${APP_DIR}/.. -name third-party -type d)
     export YQ_PATH="${thirdPartyDir}/yq"
@@ -1913,7 +1907,7 @@ initHelpers () {
     sourceScript "${systemYamlHelper}"
 }
 # Check migration info yaml file available in the path
-checkMigrationInfoYaml () {
+checkMigrationInfoYaml() {
 
     if [[ -f "${APP_DIR}/migrationHelmInfo.yaml" ]]; then
         MIGRATION_SYSTEM_YAML_INFO="${APP_DIR}/migrationHelmInfo.yaml"
@@ -1935,7 +1929,7 @@ checkMigrationInfoYaml () {
     fi
 }
 
-retrieveYamlValue () {
+retrieveYamlValue() {
     local yamlPath="$1"
     local value="$2"
     local output="$3"
@@ -1956,8 +1950,8 @@ retrieveYamlValue () {
     fi
 }
 
-checkEnv () {
-    
+checkEnv() {
+
     if [[ "${INSTALLER}" == "${ZIP_TYPE}" ]]; then
         # check Environment JF_PRODUCT_HOME is set before migration
         NEW_DATA_DIR="$(evalVariable "NEW_DATA_DIR" "JF_PRODUCT_HOME")"
@@ -1969,7 +1963,7 @@ checkEnv () {
     elif [[ "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         getCustomDataDir_hook
         NEW_DATA_DIR="${OLD_DATA_DIR}"
-        if [[ -z "${NEW_DATA_DIR}" ]] && [[  -z "${OLD_DATA_DIR}" ]]; then
+        if [[ -z "${NEW_DATA_DIR}" ]] && [[ -z "${OLD_DATA_DIR}" ]]; then
             errorExit "Could not find ${PROMPT_DATA_DIR_LOCATION} to perform Migration"
         fi
     else
@@ -1977,28 +1971,31 @@ checkEnv () {
         OLD_DATA_DIR="$(evalVariable "OLD_DATA_DIR" "JF_ROOT_DATA_DIR")"
         # check Environment JF_ROOT_DATA_DIR is set before migration
         NEW_DATA_DIR="$(evalVariable "NEW_DATA_DIR" "JF_ROOT_DATA_DIR")"
-        if [[ -z "${NEW_DATA_DIR}" ]] && [[  -z "${OLD_DATA_DIR}" ]]; then
+        if [[ -z "${NEW_DATA_DIR}" ]] && [[ -z "${OLD_DATA_DIR}" ]]; then
             errorExit "Could not find ${PROMPT_DATA_DIR_LOCATION} to perform Migration"
         fi
-            # appending var directory to $JF_PRODUCT_HOME
-            NEW_DATA_DIR="${NEW_DATA_DIR}/var"
+        # appending var directory to $JF_PRODUCT_HOME
+        NEW_DATA_DIR="${NEW_DATA_DIR}/var"
     fi
-    
+
 }
 
-getDataDir () {
+getDataDir() {
 
-    if [[ "${INSTALLER}" == "${ZIP_TYPE}" || "${INSTALLER}" == "${COMPOSE_TYPE}"|| "${INSTALLER}" == "${HELM_TYPE}" ]]; then
+    if [[ "${INSTALLER}" == "${ZIP_TYPE}" || "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         checkEnv
     else
         getCustomDataDir_hook
-        NEW_DATA_DIR="`cd "${APP_DIR}"/../../;pwd`"
+        NEW_DATA_DIR="$(
+            cd "${APP_DIR}"/../../
+            pwd
+        )"
         NEW_DATA_DIR="${NEW_DATA_DIR}/var"
     fi
 }
 
 # Retrieve Product name from MIGRATION_SYSTEM_YAML_INFO
-getProduct () {
+getProduct() {
     retrieveYamlValue "migration.product" "${YAML_VALUE}" "Fail" "Empty value under ${yamlPath} in [${MIGRATION_SYSTEM_YAML_INFO}]"
     PRODUCT="${YAML_VALUE}"
     PRODUCT=$(echo "${PRODUCT}" | tr '[:upper:]' '[:lower:]' 2>/dev/null)
@@ -2010,7 +2007,7 @@ getProduct () {
     fi
 }
 # Compare product version with minProductVersion and maxProductVersion
-migrateCheckVersion () {
+migrateCheckVersion() {
     local productVersion="$1"
     local minProductVersion="$2"
     local maxProductVersion="$3"
@@ -2022,7 +2019,7 @@ migrateCheckVersion () {
         exit 11
     elif [[ "$(io_compareVersions "${productVersion}" "${minProductVersion}")" -eq 0 || "$(io_compareVersions "${productVersion}" "${minProductVersion}")" -eq 1 ]]; then
         if [[ ("$(io_compareVersions "${productVersion}" "${productVersion618}")" -eq 0 || "$(io_compareVersions "${productVersion}" "${productVersion618}")" -eq 1) && " ${unSupportedProductVersions7[@]} " =~ " ${CURRENT_VERSION} " ]]; then
-            touch /tmp/error;
+            touch /tmp/error
             errorExit "Current ${PRODUCT} version (${productVersion}) does not support migration to ${CURRENT_VERSION}"
         else
             bannerStart "Detected ${PRODUCT} ${productVersion}, initiating migration"
@@ -2033,7 +2030,7 @@ migrateCheckVersion () {
     fi
 }
 
-getProductVersion () {
+getProductVersion() {
     local minProductVersion="$1"
     local maxProductVersion="$2"
     local newfilePath="$3"
@@ -2095,13 +2092,12 @@ getProductVersion () {
     migrateCheckVersion "${productVersion}" "${minProductVersion}" "${maxProductVersion}"
 }
 
-readKey () {
+readKey() {
     local property="$1"
     local file="$2"
     local version=
 
-    while IFS='=' read -r key value || [ -n "${key}" ];
-    do
+    while IFS='=' read -r key value || [ -n "${key}" ]; do
         [[ ! "${key}" =~ \#.* && ! -z "${key}" && ! -z "${value}" ]]
         key="$(io_trim "${key}")"
         if [[ "${key}" == "${property}" ]]; then
@@ -2109,7 +2105,7 @@ readKey () {
         else
             check=false
         fi
-    done < "${file}"
+    done <"${file}"
     if [[ "${check}" == "false" ]]; then
         return
     fi
@@ -2117,7 +2113,7 @@ readKey () {
 }
 
 # create Log directory
-createLogDir () {
+createLogDir() {
     if [[ "${INSTALLER}" == "${DEB_TYPE}" || "${INSTALLER}" == "${RPM_TYPE}" ]]; then
         getUserAndGroupFromFile
         removeSoftLinkAndCreateDir "${NEW_DATA_DIR}/log" "${USER_TO_CHECK}" "${GROUP_TO_CHECK}"
@@ -2125,7 +2121,7 @@ createLogDir () {
 }
 
 # Creating migration log file
-creationMigrateLog () {
+creationMigrateLog() {
     local LOG_FILE_NAME="migration.log"
     createLogDir
     local MIGRATION_LOG_FILE="${NEW_DATA_DIR}/log/${LOG_FILE_NAME}"
@@ -2134,17 +2130,17 @@ creationMigrateLog () {
     fi
     touch "${MIGRATION_LOG_FILE}"
     setFilePermission "${LOG_FILE_PERMISSION}" "${MIGRATION_LOG_FILE}"
-    exec &> >(tee -a "${MIGRATION_LOG_FILE}")   
+    exec &> >(tee -a "${MIGRATION_LOG_FILE}")
 }
 # Set path where system.yaml should create
-setSystemYamlPath () {
+setSystemYamlPath() {
     SYSTEM_YAML_PATH="${NEW_DATA_DIR}/etc/system.yaml"
     if [[ "${INSTALLER}" != "${HELM_TYPE}" ]]; then
         logger "system.yaml will be created in path [${SYSTEM_YAML_PATH}]"
     fi
 }
 # Create directory
-createDirectory () {
+createDirectory() {
     local directory="$1"
     local output="$2"
     local check=false
@@ -2161,7 +2157,7 @@ createDirectory () {
     setOwnershipBasedOnInstaller "${directory}"
 }
 
-setOwnershipBasedOnInstaller () {
+setOwnershipBasedOnInstaller() {
     local directory="$1"
     if [[ "${INSTALLER}" == "${DEB_TYPE}" || "${INSTALLER}" == "${RPM_TYPE}" ]]; then
         getUserAndGroupFromFile
@@ -2171,32 +2167,33 @@ setOwnershipBasedOnInstaller () {
     fi
 }
 
-getUserAndGroup () {
+getUserAndGroup() {
     local file="$1"
     read uid gid <<<$(stat -c '%U %G' ${file})
     USER_TO_CHECK="${uid}"
     GROUP_TO_CHECK="${gid}"
+    echo GROUP_TO_CHECK
 }
-    
+
 # set ownership
-getUserAndGroupFromFile () {
+getUserAndGroupFromFile() {
     case $PRODUCT in
-        artifactory)
-            getUserAndGroup "/etc/opt/jfrog/artifactory/artifactory.properties"
+    artifactory)
+        getUserAndGroup "/etc/opt/jfrog/artifactory/artifactory.properties"
         ;;
-        distribution)
-            getUserAndGroup "${OLD_DATA_DIR}/etc/versions.properties"
+    distribution)
+        getUserAndGroup "${OLD_DATA_DIR}/etc/versions.properties"
         ;;
-        xray)
-            getUserAndGroup "${OLD_DATA_DIR}/security/master.key"
+    xray)
+        getUserAndGroup "${OLD_DATA_DIR}/security/master.key"
         ;;
-        esac
-} 
+    esac
+}
 
 # creating required directories
-createRequiredDirs () {
+createRequiredDirs() {
     bannerSubSection "CREATING REQUIRED DIRECTORIES"
-    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}"  ]]; then
+    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         removeSoftLinkAndCreateDir "${NEW_DATA_DIR}/etc/security" "${JF_USER}" "${JF_USER}" "yes"
         removeSoftLinkAndCreateDir "${NEW_DATA_DIR}/data" "${JF_USER}" "${JF_USER}" "yes"
         removeSoftLinkAndCreateDir "${NEW_DATA_DIR}/log/archived" "${JF_USER}" "${JF_USER}" "yes"
@@ -2218,13 +2215,13 @@ createRequiredDirs () {
 }
 
 # Check entry in map is format
-checkMapEntry () {
+checkMapEntry() {
     local entry="$1"
 
     [[ "${entry}" != *"="* ]] && echo -n "false" || echo -n "true"
 }
 # Check value Empty and warn
-warnIfEmpty () {
+warnIfEmpty() {
     local filePath="$1"
     local yamlPath="$2"
     local check=
@@ -2238,42 +2235,42 @@ warnIfEmpty () {
     echo "${check}"
 }
 
-logCopyStatus () {
+logCopyStatus() {
     local status="$1"
     local logMessage="$2"
     local warnMessage="$3"
 
-    [[ "${status}" == "success"  ]] && logger "${logMessage}"
+    [[ "${status}" == "success" ]] && logger "${logMessage}"
     [[ "${status}" == "fail" ]] && warn "${warnMessage}"
 }
 # copy contents from source to destination
-copyCmd () {
+copyCmd() {
     local source="$1"
     local target="$2"
     local mode="$3"
     local status=
-    
+
     case $mode in
-        unique)
-            cp -up "${source}"/* "${target}"/ && status="success" || status="fail"
-            logCopyStatus "${status}" "Successfully copied directory contents from [${source}] to [${target}]" "Failed to copy directory contents from [${source}] to [${target}]"
+    unique)
+        cp -up "${source}"/* "${target}"/ && status="success" || status="fail"
+        logCopyStatus "${status}" "Successfully copied directory contents from [${source}] to [${target}]" "Failed to copy directory contents from [${source}] to [${target}]"
         ;;
-        specific)
-            cp -pf "${source}" "${target}"/ && status="success" || status="fail"
-            logCopyStatus "${status}" "Successfully copied file [${source}] to [${target}]" "Failed to copy file [${source}] to [${target}]"
+    specific)
+        cp -pf "${source}" "${target}"/ && status="success" || status="fail"
+        logCopyStatus "${status}" "Successfully copied file [${source}] to [${target}]" "Failed to copy file [${source}] to [${target}]"
         ;;
-        patternFiles)
-            cp -pf "${source}"* "${target}"/ && status="success" || status="fail"
-            logCopyStatus "${status}" "Successfully copied files matching [${source}*] to [${target}]" "Failed to copy files matching [${source}*] to [${target}]"
+    patternFiles)
+        cp -pf "${source}"* "${target}"/ && status="success" || status="fail"
+        logCopyStatus "${status}" "Successfully copied files matching [${source}*] to [${target}]" "Failed to copy files matching [${source}*] to [${target}]"
         ;;
-        full)
-            cp -prf "${source}"/* "${target}"/ && status="success" || status="fail"
-            logCopyStatus "${status}" "Successfully copied directory contents from [${source}] to [${target}]" "Failed to copy directory contents from [${source}] to [${target}]"
+    full)
+        cp -prf "${source}"/* "${target}"/ && status="success" || status="fail"
+        logCopyStatus "${status}" "Successfully copied directory contents from [${source}] to [${target}]" "Failed to copy directory contents from [${source}] to [${target}]"
         ;;
     esac
 }
 # Check contents exist in source before copying
-copyOnContentExist () {
+copyOnContentExist() {
     local source="$1"
     local target="$2"
     local mode="$3"
@@ -2286,34 +2283,34 @@ copyOnContentExist () {
 }
 
 # move source to destination
-moveCmd () {
+moveCmd() {
     local source="$1"
     local target="$2"
     local status=
-    
+
     mv -f "${source}" "${target}" && status="success" || status="fail"
     [[ "${status}" == "success" ]] && logger "Successfully moved directory [${source}] to [${target}]"
     [[ "${status}" == "fail" ]] && warn "Failed to move directory [${source}] to [${target}]"
 }
 
 # symlink target to source
-symlinkCmd () {
+symlinkCmd() {
     local source="$1"
     local target="$2"
     local symlinkSubDir="$3"
     local check=false
-    
+
     if [[ "${symlinkSubDir}" == "subDir" ]]; then
         ln -sf "${source}"/* "${target}" && check=true || check=false
     else
-        ln -sf "${source}" "${target}"   && check=true || check=false
+        ln -sf "${source}" "${target}" && check=true || check=false
     fi
-    
-    [[ "${check}" == "true"  ]] && logger "Successfully symlinked directory [${target}] to old [${source}]"
+
+    [[ "${check}" == "true" ]] && logger "Successfully symlinked directory [${target}] to old [${source}]"
     [[ "${check}" == "false" ]] && warn "Symlink operation failed"
 }
 # Check contents exist in source before symlinking
-symlinkOnExist () {
+symlinkOnExist() {
     local source="$1"
     local target="$2"
     local symlinkSubDir="$3"
@@ -2329,7 +2326,7 @@ symlinkOnExist () {
     fi
 }
 
-prependDir () {
+prependDir() {
     local absolutePath="$1"
     local fullPath="$2"
     local sourcePath=
@@ -2342,36 +2339,39 @@ prependDir () {
     echo "${sourcePath}"
 }
 
-getFirstEntry (){
+getFirstEntry() {
     local entry="$1"
 
     [[ -z "${entry}" ]] && return
     echo "${entry}" | awk -F"=" '{print $1}'
 }
 
-getSecondEntry () {
+getSecondEntry() {
     local entry="$1"
 
     [[ -z "${entry}" ]] && return
     echo "${entry}" | awk -F"=" '{print $2}'
 }
 # To get absolutePath
-pathResolver () {
+pathResolver() {
     local directoryPath="$1"
     local dataDir=
 
-    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" ||  "${INSTALLER}" == "${HELM_TYPE}" ]]; then
+    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         retrieveYamlValue "migration.oldDataDir" "oldDataDir" "Warning"
         dataDir="${YAML_VALUE}"
         cd "${dataDir}"
     else
         cd "${OLD_DATA_DIR}"
     fi
-    absoluteDir="`cd "${directoryPath}";pwd`"
+    absoluteDir="$(
+        cd "${directoryPath}"
+        pwd
+    )"
     echo "${absoluteDir}"
 }
 
-checkPathResolver () {
+checkPathResolver() {
     local value="$1"
 
     if [[ "${value}" == \/* ]]; then
@@ -2382,7 +2382,7 @@ checkPathResolver () {
     echo "${value}"
 }
 
-propertyMigrate () {
+propertyMigrate() {
     local entry="$1"
     local filePath="$2"
     local fileName="$3"
@@ -2408,7 +2408,7 @@ propertyMigrate () {
             if [[ "${PRODUCT}" == "artifactory" ]]; then
                 value="$(migrateResolveDerbyPath "${key}" "${value}")"
                 value="$(migrateResolveHaDirPath "${key}" "${value}")"
-                if [[ "${INSTALLER}" != "${DOCKER_TYPE}" ]]; then 
+                if [[ "${INSTALLER}" != "${DOCKER_TYPE}" ]]; then
                     value="$(updatePostgresUrlString_Hook "${yamlPath}" "${value}")"
                 fi
             fi
@@ -2423,24 +2423,23 @@ propertyMigrate () {
     [[ "${check}" == "false" ]] && logger "Property [${property}] not found in file [${fileName}]"
 }
 
-setHaEnabled_hook () {
+setHaEnabled_hook() {
     echo ""
 }
 
-migratePropertiesFiles () {
+migratePropertiesFiles() {
     local fileList=
     local filePath=
     local fileName=
     local map=
-    
+
     retrieveYamlValue "migration.propertyFiles.files" "fileList" "Skip"
     fileList="${YAML_VALUE}"
     if [[ -z "${fileList}" ]]; then
         return
     fi
     bannerSection "PROCESSING MIGRATION OF PROPERTY FILES"
-    for file in ${fileList};
-    do
+    for file in ${fileList}; do
         bannerSubSection "Processing Migration of $file"
         retrieveYamlValue "migration.propertyFiles.$file.filePath" "filePath" "Warning"
         filePath="${YAML_VALUE}"
@@ -2454,8 +2453,7 @@ migratePropertiesFiles () {
             retrieveYamlValue "migration.propertyFiles.$file.map" "map" "Warning"
             map="${YAML_VALUE}"
             [[ -z "${map}" ]] && continue
-            for entry in $map;
-            do
+            for entry in $map; do
                 if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
                     propertyMigrate "${entry}" "${filePath}" "${fileName}"
                 else
@@ -2468,7 +2466,7 @@ migratePropertiesFiles () {
     done
 }
 
-createTargetDir () {
+createTargetDir() {
     local mountDir="$1"
     local target="$2"
 
@@ -2476,17 +2474,16 @@ createTargetDir () {
     createDirectoryRecursive "${mountDir}" "${target}" "Warning"
 }
 
-createDirectoryRecursive () {
+createDirectoryRecursive() {
     local mountDir="$1"
     local target="$2"
     local output="$3"
     local check=false
     local message="Could not create directory ${directory}, please check if the user ${USER} has permissions to perform this action"
     removeSoftLink "${mountDir}/${target}"
-    local directory=$(echo "${target}" | tr '/' ' ' )
+    local directory=$(echo "${target}" | tr '/' ' ')
     local targetDir="${mountDir}"
-    for dir in ${directory}; 
-    do
+    for dir in ${directory}; do
         targetDir="${targetDir}/${dir}"
         mkdir -p "${targetDir}" && check=true || check=false
         setOwnershipBasedOnInstaller "${targetDir}"
@@ -2500,7 +2497,7 @@ createDirectoryRecursive () {
     fi
 }
 
-copyOperation () {
+copyOperation() {
     local source="$1"
     local target="$2"
     local mode="$3"
@@ -2514,7 +2511,10 @@ copyOperation () {
     if [[ "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         targetDataDir="${NEW_DATA_DIR}"
     else
-        targetDataDir="`cd "${NEW_DATA_DIR}"/../;pwd`"
+        targetDataDir="$(
+            cd "${NEW_DATA_DIR}"/../
+            pwd
+        )"
     fi
     copyLogMessage "${mode}"
     #remove source if it is a symlink
@@ -2538,17 +2538,20 @@ copyOperation () {
     copyOnContentExist "${source}" "${targetDataDir}/${target}" "${mode}"
 }
 
-copySpecificFiles () {
+copySpecificFiles() {
     local source="$1"
     local target="$2"
     local mode="$3"
-    
+
     # prepend OLD_DATA_DIR only if source is relative path
     source="$(prependDir "${source}" "${OLD_DATA_DIR}/${source}")"
     if [[ "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         targetDataDir="${NEW_DATA_DIR}"
     else
-        targetDataDir="`cd "${NEW_DATA_DIR}"/../;pwd`"
+        targetDataDir="$(
+            cd "${NEW_DATA_DIR}"/../
+            pwd
+        )"
     fi
     copyLogMessage "${mode}"
     if [[ "$(checkFileExists "${source}")" != "true" ]]; then
@@ -2561,7 +2564,7 @@ copySpecificFiles () {
     copyCmd "${source}" "${targetDataDir}/${target}" "${mode}"
 }
 
-copyPatternMatchingFiles () {
+copyPatternMatchingFiles() {
     local source="$1"
     local target="$2"
     local mode="$3"
@@ -2572,14 +2575,17 @@ copyPatternMatchingFiles () {
     if [[ "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         targetDataDir="${NEW_DATA_DIR}"
     else
-        targetDataDir="`cd "${NEW_DATA_DIR}"/../;pwd`"
+        targetDataDir="$(
+            cd "${NEW_DATA_DIR}"/../
+            pwd
+        )"
     fi
     copyLogMessage "${mode}"
     if [[ "$(checkDirExists "${sourcePath}")" != "true" ]]; then
         logger "Source [${sourcePath}] directory not found in path"
         return
     fi
-    if ls "${sourcePath}/${source}"* 1> /dev/null 2>&1; then
+    if ls "${sourcePath}/${source}"* 1>/dev/null 2>&1; then
         if [[ "$(checkDirExists "${targetDataDir}/${target}")" != "true" ]]; then
             createTargetDir "${targetDataDir}" "${target}"
         fi
@@ -2589,67 +2595,67 @@ copyPatternMatchingFiles () {
     fi
 }
 
-copyLogMessage () {
+copyLogMessage() {
     local mode="$1"
     case $mode in
-        specific)
-            logger "Copy file [${source}] to target [${targetDataDir}/${target}]"
+    specific)
+        logger "Copy file [${source}] to target [${targetDataDir}/${target}]"
         ;;
-        patternFiles)
-            logger "Copy files matching [${sourcePath}/${source}*] to target [${targetDataDir}/${target}]"
+    patternFiles)
+        logger "Copy files matching [${sourcePath}/${source}*] to target [${targetDataDir}/${target}]"
         ;;
-        full)
-            logger "Copy directory contents from source [${source}] to target [${targetDataDir}/${target}]"
+    full)
+        logger "Copy directory contents from source [${source}] to target [${targetDataDir}/${target}]"
         ;;
-        unique)
-            logger "Copy directory contents from source [${source}] to target [${targetDataDir}/${target}]"
+    unique)
+        logger "Copy directory contents from source [${source}] to target [${targetDataDir}/${target}]"
         ;;
     esac
 }
 
-copyBannerMessages () {
+copyBannerMessages() {
     local mode="$1"
     local textMode="$2"
     case $mode in
-        specific)
-            bannerSection "COPY ${textMode} FILES"
+    specific)
+        bannerSection "COPY ${textMode} FILES"
         ;;
-        patternFiles)
-            bannerSection "COPY MATCHING ${textMode}"
+    patternFiles)
+        bannerSection "COPY MATCHING ${textMode}"
         ;;
-        full)
-            bannerSection "COPY ${textMode} DIRECTORIES CONTENTS"
+    full)
+        bannerSection "COPY ${textMode} DIRECTORIES CONTENTS"
         ;;
-        unique)
-            bannerSection "COPY ${textMode} DIRECTORIES CONTENTS"
+    unique)
+        bannerSection "COPY ${textMode} DIRECTORIES CONTENTS"
         ;;
     esac
 }
 
-invokeCopyFunctions () {
+invokeCopyFunctions() {
     local mode="$1"
     local source="$2"
     local target="$3"
 
     case $mode in
-        specific)
-            copySpecificFiles "${source}" "${target}" "${mode}"
+    specific)
+        copySpecificFiles "${source}" "${target}" "${mode}"
         ;;
-        patternFiles)
-            retrieveYamlValue "migration.${copyFormat}.sourcePath" "map" "Warning"
-            local sourcePath="${YAML_VALUE}"
-            copyPatternMatchingFiles "${source}" "${target}" "${mode}" "${sourcePath}"
+    patternFiles)
+        retrieveYamlValue "migration.${copyFormat}.sourcePath" "map" "Warning"
+        local sourcePath="${YAML_VALUE}"
+        copyPatternMatchingFiles "${source}" "${target}" "${mode}" "${sourcePath}"
         ;;
-        full)
-            copyOperation "${source}" "${target}" "${mode}"
+    full)
+        copyOperation "${source}" "${target}" "${mode}"
         ;;
-        unique)
-            copyOperation "${source}" "${target}" "${mode}"
+    unique)
+        copyOperation "${source}" "${target}" "${mode}"
         ;;
     esac
 }
 # Copies contents from source directory and target directory
-copyDataDirectories () {
+copyDataDirectories() {
     local copyFormat="$1"
     local mode="$2"
     local map=
@@ -2671,10 +2677,12 @@ copyDataDirectories () {
     if [[ "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         targetDataDir="${NEW_DATA_DIR}"
     else
-        targetDataDir="`cd "${NEW_DATA_DIR}"/../;pwd`"
+        targetDataDir="$(
+            cd "${NEW_DATA_DIR}"/../
+            pwd
+        )"
     fi
-    for entry in $map;
-    do
+    for entry in $map; do
         if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
             source="$(getSecondEntry "${entry}")"
             target="$(getFirstEntry "${entry}")"
@@ -2684,11 +2692,11 @@ copyDataDirectories () {
         else
             warn "map entry [${entry}] in [${MIGRATION_SYSTEM_YAML_INFO}] is not in correct format, correct format i.e target=source"
         fi
-        echo "";
+        echo ""
     done
 }
 
-invokeMoveFunctions () {
+invokeMoveFunctions() {
     local source="$1"
     local target="$2"
     local sourceDataDir=
@@ -2711,7 +2719,7 @@ invokeMoveFunctions () {
 }
 
 # Move source directory and target directory
-moveDirectories () {
+moveDirectories() {
     local moveDataDirectories=
     local map=
     local source=
@@ -2725,8 +2733,7 @@ moveDirectories () {
     bannerSection "MOVE DIRECTORIES"
     retrieveYamlValue "migration.moveDirectories.map" "map" "Warning"
     map="${YAML_VALUE}"
-    for entry in $map;
-    do
+    for entry in $map; do
         if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
             source="$(getSecondEntry "${entry}")"
             target="$(getFirstEntry "${entry}")"
@@ -2736,12 +2743,12 @@ moveDirectories () {
         else
             warn "map entry [${entry}] in [${MIGRATION_SYSTEM_YAML_INFO}] is not in correct format, correct format i.e target=source"
         fi
-    echo "";
+        echo ""
     done
 }
 
-# Trim masterKey if its generated using hex 32 
-trimMasterKey () {
+# Trim masterKey if its generated using hex 32
+trimMasterKey() {
     local masterKeyDir=/opt/jfrog/artifactory/var/etc/security
     local oldMasterKey=$(<${masterKeyDir}/master.key)
     local oldMasterKey_Length=$(echo ${#oldMasterKey})
@@ -2752,12 +2759,12 @@ trimMasterKey () {
         cp ${masterKeyDir}/master.key ${masterKeyDir}/backup_master.key
         logger "Original masterKey is backed up : ${masterKeyDir}/backup_master.key"
         rm -rf ${masterKeyDir}/master.key
-        echo ${newMasterKey} > ${masterKeyDir}/master.key
+        echo ${newMasterKey} >${masterKeyDir}/master.key
         logger "masterKey is trimmed : ${masterKeyDir}/master.key"
     fi
 }
 
-copyDirectories () {
+copyDirectories() {
 
     copyDataDirectories "copyFiles" "full"
     copyDataDirectories "copyUniqueFiles" "unique"
@@ -2765,13 +2772,13 @@ copyDirectories () {
     copyDataDirectories "copyPatternMatchingFiles" "patternFiles"
 }
 
-symlinkDir () {
+symlinkDir() {
     local source="$1"
     local target="$2"
     local targetDir=
     local basename=
     local targetParentDir=
-    
+
     targetDir="$(dirname "${target}")"
     if [[ "${targetDir}" == "${source}" ]]; then
         # symlink the sub directories
@@ -2790,13 +2797,13 @@ symlinkDir () {
     fi
 }
 
-symlinkOperation () {
+symlinkOperation() {
     local source="$1"
     local target="$2"
     local check=false
     local targetLink=
     local date=
-    
+
     #   Check if source is a link and do symlink
     if [[ -L "${OLD_DATA_DIR}/${source}" ]]; then
         targetLink=$(readlink -f "${OLD_DATA_DIR}/${source}")
@@ -2822,7 +2829,7 @@ symlinkOperation () {
     fi
 }
 # Creates a symlink path - Source directory to which the symbolic link should point.
-symlinkDirectories () {
+symlinkDirectories() {
     local linkFiles=
     local map=
     local source=
@@ -2836,8 +2843,7 @@ symlinkDirectories () {
     bannerSection "SYMLINK DIRECTORIES"
     retrieveYamlValue "migration.linkFiles.map" "map" "Warning"
     map="${YAML_VALUE}"
-    for entry in $map;
-    do
+    for entry in $map; do
         if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
             source="$(getSecondEntry "${entry}")"
             target="$(getFirstEntry "${entry}")"
@@ -2848,11 +2854,11 @@ symlinkDirectories () {
         else
             warn "map entry [${entry}] in [${MIGRATION_SYSTEM_YAML_INFO}] is not in correct format, correct format i.e target=source"
         fi
-        echo "";
+        echo ""
     done
 }
 
-updateConnectionString () {
+updateConnectionString() {
     local yamlPath="$1"
     local value="$2"
     local mongoPath="shared.mongo.url"
@@ -2863,37 +2869,37 @@ updateConnectionString () {
     local sourceKey=
     local hostIp=$(io_getPublicHostIP)
     local hostKey=
-    
-    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then 
-    # Replace @postgres:,@mongodb:,@rabbitmq:,@redis: to @{hostIp}: (Compose Installer)
+
+    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
+        # Replace @postgres:,@mongodb:,@rabbitmq:,@redis: to @{hostIp}: (Compose Installer)
         hostKey="@${hostIp}:"
         case $yamlPath in
-            ${postgresPath})
-                sourceKey="@postgres:"
-                value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
+        ${postgresPath})
+            sourceKey="@postgres:"
+            value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
             ;;
-            ${mongoPath})
-                sourceKey="@mongodb:"
-                value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
+        ${mongoPath})
+            sourceKey="@mongodb:"
+            value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
             ;;
-            ${rabbitmqPath})
-                sourceKey="@rabbitmq:"
-                value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
+        ${rabbitmqPath})
+            sourceKey="@rabbitmq:"
+            value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
             ;;
-            ${redisPath})
-                sourceKey="@redis:"
-                value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
+        ${redisPath})
+            sourceKey="@redis:"
+            value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
             ;;
-            ${mongoConnectionString})
-                sourceKey="@mongodb:"
-                value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
+        ${mongoConnectionString})
+            sourceKey="@mongodb:"
+            value=$(io_replaceString "${value}" "${sourceKey}" "${hostKey}")
             ;;
         esac
     fi
     echo -n "${value}"
 }
 
-yamlMigrate () {
+yamlMigrate() {
     local entry="$1"
     local sourceFile="$2"
     local value=
@@ -2925,7 +2931,7 @@ yamlMigrate () {
     fi
 }
 
-migrateYamlFile () {
+migrateYamlFile() {
     local files=
     local filePath=
     local fileName=
@@ -2937,8 +2943,7 @@ migrateYamlFile () {
         return
     fi
     bannerSection "MIGRATION OF YAML FILES"
-    for file in $files;
-    do
+    for file in $files; do
         bannerSubSection "Processing Migration of $file"
         retrieveYamlValue "migration.yaml.$file.filePath" "filePath" "Warning"
         filePath="${YAML_VALUE}"
@@ -2951,8 +2956,7 @@ migrateYamlFile () {
             retrieveYamlValue "migration.yaml.$file.map" "map" "Warning"
             map="${YAML_VALUE}"
             [[ -z "${map}" ]] && continue
-            for entry in $map;
-            do
+            for entry in $map; do
                 if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
                     yamlMigrate "${entry}" "${sourceFile}"
                 else
@@ -2965,7 +2969,7 @@ migrateYamlFile () {
     done
 }
 # updates the key and value in system.yaml
-updateYamlKeyValue () {
+updateYamlKeyValue() {
     local entry="$1"
     local value=
     local yamlPath=
@@ -2985,7 +2989,7 @@ updateYamlKeyValue () {
     logger "Setting [${yamlPath}] with value [${value}] in system.yaml"
 }
 
-updateSystemYamlFile () {
+updateSystemYamlFile() {
     local updateYaml=
     local map=
 
@@ -3000,8 +3004,7 @@ updateSystemYamlFile () {
     if [[ -z "${map}" ]]; then
         return
     fi
-    for entry in $map;
-    do
+    for entry in $map; do
         if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
             updateYamlKeyValue "${entry}"
         else
@@ -3010,11 +3013,11 @@ updateSystemYamlFile () {
     done
 }
 
-backupFiles_hook () {
+backupFiles_hook() {
     logSilly "Method ${FUNCNAME[0]}"
 }
 
-backupDirectory () {
+backupDirectory() {
     local backupDir="$1"
     local dir="$2"
     local targetDir="$3"
@@ -3024,15 +3027,15 @@ backupDirectory () {
     if [[ "${dir}" = \/* ]]; then
         dir=$(echo "${dir/\//}")
     fi
-            
-    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then 
+
+    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         effectiveUser="${JF_USER}"
         effectiveGroup="${JF_USER}"
     elif [[ "${INSTALLER}" == "${DEB_TYPE}" || "${INSTALLER}" == "${RPM_TYPE}" ]]; then
-        effectiveUser="${USER_TO_CHECK}" 
+        effectiveUser="${USER_TO_CHECK}"
         effectiveGroup="${GROUP_TO_CHECK}"
     fi
-    
+
     removeSoftLinkAndCreateDir "${backupDir}" "${effectiveUser}" "${effectiveGroup}" "yes"
     local backupDirectory="${backupDir}/${PRODUCT}"
     removeSoftLinkAndCreateDir "${backupDirectory}" "${effectiveUser}" "${effectiveGroup}" "yes"
@@ -3043,27 +3046,27 @@ backupDirectory () {
     fi
 }
 
-removeOldDirectory () {
+removeOldDirectory() {
     local backupDir="$1"
     local entry="$2"
     local check=false
-    
+
     # prepend OLD_DATA_DIR only if entry is relative path
     local targetDir="$(prependDir "${entry}" "${OLD_DATA_DIR}/${entry}")"
     local outputCheckDirExists="$(checkDirExists "${targetDir}")"
     if [[ "${outputCheckDirExists}" != "true" ]]; then
         logger "No [${targetDir}] directory found to delete"
-        echo "";
+        echo ""
         return
     fi
     backupDirectory "${backupDir}" "${entry}" "${targetDir}"
-    rm -rf  "${targetDir}" && check=true || check=false
-    [[ "${check}" == "true"  ]] && logger "Successfully removed directory [${targetDir}]"
+    rm -rf "${targetDir}" && check=true || check=false
+    [[ "${check}" == "true" ]] && logger "Successfully removed directory [${targetDir}]"
     [[ "${check}" == "false" ]] && warn "Failed to remove directory [${targetDir}]"
-    echo "";
+    echo ""
 }
 
-cleanUpOldDataDirectories () {
+cleanUpOldDataDirectories() {
     local cleanUpOldDataDir=
     local map=
     local entry=
@@ -3081,13 +3084,12 @@ cleanUpOldDataDirectories () {
     backupDir="${NEW_DATA_DIR}/backup/backup-${date}"
     bannerImportant "****** Old data configurations are backedup in [${backupDir}] directory ******"
     backupFiles_hook "${backupDir}/${PRODUCT}"
-    for entry in $map;
-    do
+    for entry in $map; do
         removeOldDirectory "${backupDir}" "${entry}"
     done
 }
 
-backupFiles () {
+backupFiles() {
     local backupDir="$1"
     local dir="$2"
     local targetDir="$3"
@@ -3098,12 +3100,12 @@ backupFiles () {
     if [[ "${dir}" = \/* ]]; then
         dir=$(echo "${dir/\//}")
     fi
-            
-    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then 
+
+    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         effectiveUser="${JF_USER}"
         effectiveGroup="${JF_USER}"
     elif [[ "${INSTALLER}" == "${DEB_TYPE}" || "${INSTALLER}" == "${RPM_TYPE}" ]]; then
-        effectiveUser="${USER_TO_CHECK}" 
+        effectiveUser="${USER_TO_CHECK}"
         effectiveGroup="${GROUP_TO_CHECK}"
     fi
 
@@ -3117,12 +3119,12 @@ backupFiles () {
     fi
 }
 
-removeOldFiles () {
+removeOldFiles() {
     local backupDir="$1"
     local directoryName="$2"
     local fileName="$3"
     local check=false
-    
+
     # prepend OLD_DATA_DIR only if entry is relative path
     local targetDir="$(prependDir "${directoryName}" "${OLD_DATA_DIR}/${directoryName}")"
     local outputCheckFileExists="$(checkFileExists "${targetDir}/${fileName}")"
@@ -3131,13 +3133,13 @@ removeOldFiles () {
         return
     fi
     backupFiles "${backupDir}" "${directoryName}" "${targetDir}" "${fileName}"
-    rm -f  "${targetDir}/${fileName}" && check=true || check=false
-    [[ "${check}" == "true"  ]] && logger "Successfully removed file [${targetDir}/${fileName}]"
+    rm -f "${targetDir}/${fileName}" && check=true || check=false
+    [[ "${check}" == "true" ]] && logger "Successfully removed file [${targetDir}/${fileName}]"
     [[ "${check}" == "false" ]] && warn "Failed to remove file [${targetDir}/${fileName}]"
-    echo "";
+    echo ""
 }
 
-cleanUpOldFiles () {
+cleanUpOldFiles() {
     local cleanUpFiles=
     local map=
     local entry=
@@ -3154,8 +3156,7 @@ cleanUpOldFiles () {
     date="$(date +%Y%m%d%H%M)"
     backupDir="${NEW_DATA_DIR}/backup/backup-${date}"
     bannerImportant "****** Old files are backedup in [${backupDir}] directory ******"
-    for entry in $map;
-    do  
+    for entry in $map; do
         local outputCheckMapEntry="$(checkMapEntry "${entry}")"
         if [[ "${outputCheckMapEntry}" != "true" ]]; then
             warn "map entry [${entry}] in [${MIGRATION_SYSTEM_YAML_INFO}] is not in correct format, correct format i.e directoryName=fileName"
@@ -3165,19 +3166,19 @@ cleanUpOldFiles () {
         [[ -z "${fileName}" ]] && warn "File name value is empty for [${entry}] in [${MIGRATION_SYSTEM_YAML_INFO}]" && continue
         [[ -z "${directoryName}" ]] && warn "Directory name value is empty for [${entry}] in [${MIGRATION_SYSTEM_YAML_INFO}]" && continue
         removeOldFiles "${backupDir}" "${directoryName}" "${fileName}"
-        echo "";
-    done 
+        echo ""
+    done
 }
 
-startMigration () {
+startMigration() {
     bannerSection "STARTING MIGRATION"
 }
 
-endMigration () {
+endMigration() {
     bannerSection "MIGRATION COMPLETED SUCCESSFULLY"
 }
 
-initialize () {
+initialize() {
     setAppDir
     _pauseExecution "setAppDir"
     initHelpers
@@ -3190,16 +3191,16 @@ initialize () {
     _pauseExecution "getDataDir"
 }
 
-main () {
+main() {
     case $PRODUCT in
-        artifactory)
-            migrateArtifactory
+    artifactory)
+        migrateArtifactory
         ;;
-        distribution)
-            migrateDistribution
+    distribution)
+        migrateDistribution
         ;;
-        xray)
-            migrationXray
+    xray)
+        migrationXray
         ;;
     esac
     exit 0
@@ -3208,8 +3209,7 @@ main () {
 # Ensures meta data is logged
 LOG_BEHAVIOR_ADD_META="$FLAG_Y"
 
-
-migrateResolveDerbyPath () {
+migrateResolveDerbyPath() {
     local key="$1"
     local value="$2"
 
@@ -3225,7 +3225,7 @@ migrateResolveDerbyPath () {
     echo "${value}"
 }
 
-migrateResolveHaDirPath () {
+migrateResolveHaDirPath() {
     local key="$1"
     local value="$2"
 
@@ -3236,7 +3236,7 @@ migrateResolveHaDirPath () {
     fi
     echo "${value}"
 }
-updatePostgresUrlString_Hook () {
+updatePostgresUrlString_Hook() {
     local yamlPath="$1"
     local value="$2"
     local hostIp=$(io_getPublicHostIP)
@@ -3247,18 +3247,18 @@ updatePostgresUrlString_Hook () {
     echo "${value}"
 }
 # Check Artifactory product version
-checkArtifactoryVersion () {
+checkArtifactoryVersion() {
     local minProductVersion="6.0.0"
     local maxProductVersion="7.0.0"
     local propertyInDocker="ARTIFACTORY_VERSION"
     local property="artifactory.version"
-    
-    if [[ "${INSTALLER}" ==  "${COMPOSE_TYPE}" ]]; then
+
+    if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" ]]; then
         local newfilePath="${APP_DIR}/../.env"
         local oldfilePath="${OLD_DATA_DIR}/etc/artifactory.properties"
-    elif [[ "${INSTALLER}" ==  "${HELM_TYPE}" ]]; then
+    elif [[ "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         local oldfilePath="${OLD_DATA_DIR}/etc/artifactory.properties"
-    elif [[ "${INSTALLER}" ==  "${ZIP_TYPE}" ]]; then
+    elif [[ "${INSTALLER}" == "${ZIP_TYPE}" ]]; then
         local newfilePath="${NEW_DATA_DIR}/etc/artifactory/artifactory.properties"
         local oldfilePath="${OLD_DATA_DIR}/etc/artifactory.properties"
     else
@@ -3269,22 +3269,22 @@ checkArtifactoryVersion () {
     getProductVersion "${minProductVersion}" "${maxProductVersion}" "${newfilePath}" "${oldfilePath}" "${propertyInDocker}" "${property}"
 }
 
-getCustomDataDir_hook () {
+getCustomDataDir_hook() {
     retrieveYamlValue "migration.oldDataDir" "oldDataDir" "Fail"
     OLD_DATA_DIR="${YAML_VALUE}"
 }
 
 # Get protocol value of connector
-getXmlConnectorProtocol () {
+getXmlConnectorProtocol() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
-    local protocolValue=$($LIBXML2_PATH --xpath '//Server/Service/Connector['$i']/@protocol' ${filePath}/${fileName} 2>/dev/null |awk -F"=" '{print $2}' | tr -d '"')
+    local protocolValue=$($LIBXML2_PATH --xpath '//Server/Service/Connector['$i']/@protocol' ${filePath}/${fileName} 2>/dev/null | awk -F"=" '{print $2}' | tr -d '"')
     echo -e "${protocolValue}"
 }
 
 # Get all attributes of connector
-getXmlConnectorAttributes () {
+getXmlConnectorAttributes() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3295,7 +3295,7 @@ getXmlConnectorAttributes () {
 }
 
 # Get port value of connector
-getXmlConnectorPort () {
+getXmlConnectorPort() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3304,7 +3304,7 @@ getXmlConnectorPort () {
 }
 
 # Get maxThreads value of connector
-getXmlConnectorMaxThreads () {
+getXmlConnectorMaxThreads() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3312,7 +3312,7 @@ getXmlConnectorMaxThreads () {
     echo -e "${maxThreadValue}"
 }
 # Get sendReasonPhrase value of connector
-getXmlConnectorSendReasonPhrase () {
+getXmlConnectorSendReasonPhrase() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3320,7 +3320,7 @@ getXmlConnectorSendReasonPhrase () {
     echo -e "${sendReasonPhraseValue}"
 }
 # Get relaxedPathChars value of connector
-getXmlConnectorRelaxedPathChars () {
+getXmlConnectorRelaxedPathChars() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3330,7 +3330,7 @@ getXmlConnectorRelaxedPathChars () {
     echo -e "${relaxedPathCharsValue}"
 }
 # Get relaxedQueryChars value of connector
-getXmlConnectorRelaxedQueryChars () {
+getXmlConnectorRelaxedQueryChars() {
     local i="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3340,8 +3340,8 @@ getXmlConnectorRelaxedQueryChars () {
     echo -e "${relaxedQueryCharsValue}"
 }
 
-# Updating system.yaml with Connector port 
-setConnectorPort () {
+# Updating system.yaml with Connector port
+setConnectorPort() {
     local yamlPath="$1"
     local valuePort="$2"
     local portYamlPath=
@@ -3363,14 +3363,14 @@ setConnectorPort () {
 }
 
 # Updating system.yaml with Connector maxThreads
-setConnectorMaxThread () {
+setConnectorMaxThread() {
     local yamlPath="$1"
     local threadValue="$2"
     local maxThreadYamlPath=
     if [[ -z "${yamlPath}" ]]; then
         return
     fi
-    if [[ -z  "${threadValue}" ]]; then
+    if [[ -z "${threadValue}" ]]; then
         return
     fi
     ## Getting max Threads yaml path from migration info yaml
@@ -3384,14 +3384,14 @@ setConnectorMaxThread () {
 }
 
 # Updating system.yaml with Connector sendReasonPhrase
-setConnectorSendReasonPhrase () {
+setConnectorSendReasonPhrase() {
     local yamlPath="$1"
     local sendReasonPhraseValue="$2"
     local sendReasonPhraseYamlPath=
     if [[ -z "${yamlPath}" ]]; then
         return
     fi
-    if [[ -z  "${sendReasonPhraseValue}" ]]; then
+    if [[ -z "${sendReasonPhraseValue}" ]]; then
         return
     fi
     ## Getting sendReasonPhrase yaml path from migration info yaml
@@ -3405,14 +3405,14 @@ setConnectorSendReasonPhrase () {
 }
 
 # Updating system.yaml with Connector relaxedPathChars
-setConnectorRelaxedPathChars () {
+setConnectorRelaxedPathChars() {
     local yamlPath="$1"
     local relaxedPathCharsValue="$2"
     local relaxedPathCharsYamlPath=
     if [[ -z "${yamlPath}" ]]; then
         return
     fi
-    if [[ -z  "${relaxedPathCharsValue}" ]]; then
+    if [[ -z "${relaxedPathCharsValue}" ]]; then
         return
     fi
     ## Getting relaxedPathChars yaml path from migration info yaml
@@ -3426,14 +3426,14 @@ setConnectorRelaxedPathChars () {
 }
 
 # Updating system.yaml with Connector relaxedQueryChars
-setConnectorRelaxedQueryChars () {
+setConnectorRelaxedQueryChars() {
     local yamlPath="$1"
     local relaxedQueryCharsValue="$2"
     local relaxedQueryCharsYamlPath=
     if [[ -z "${yamlPath}" ]]; then
         return
     fi
-    if [[ -z  "${relaxedQueryCharsValue}" ]]; then
+    if [[ -z "${relaxedQueryCharsValue}" ]]; then
         return
     fi
     ## Getting relaxedQueryChars yaml path from migration info yaml
@@ -3447,7 +3447,7 @@ setConnectorRelaxedQueryChars () {
 }
 
 # Updating system.yaml with Connectors configurations
-setConnectorExtraConfig () {
+setConnectorExtraConfig() {
     local yamlPath="$1"
     local connectorAttributes="$2"
     local extraConfigPath=
@@ -3470,7 +3470,7 @@ setConnectorExtraConfig () {
 }
 
 # Updating system.yaml with extra Connectors
-setExtraConnector () {
+setExtraConnector() {
     local yamlPath="$1"
     local extraConnector="$2"
     local extraConnectorYamlPath=
@@ -3486,33 +3486,32 @@ setExtraConnector () {
     if [[ -z "${extraConnectorYamlPath}" ]]; then
         return
     fi
-    getYamlValue  "${extraConnectorYamlPath}"  "${SYSTEM_YAML_PATH}"  "false"
+    getYamlValue "${extraConnectorYamlPath}" "${SYSTEM_YAML_PATH}" "false"
     local connectorExtra="${YAML_VALUE}"
     if [[ -z "${connectorExtra}" ]]; then
         setSystemValue "${extraConnectorYamlPath}" "${extraConnector}" "${SYSTEM_YAML_PATH}"
         logger "Setting [${extraConnectorYamlPath}] with extra connectors in system.yaml"
-    else    
+    else
         setSystemValue "${extraConnectorYamlPath}" "\"${connectorExtra} ${extraConnector}\"" "${SYSTEM_YAML_PATH}"
         logger "Setting [${extraConnectorYamlPath}] with extra connectors in system.yaml"
     fi
 }
 
 # Migrate extra connectors to system.yaml
-migrateExtraConnectors () {
+migrateExtraConnectors() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
     local excludeDefaultPort="$4"
     local i="$5"
-    local extraConfig= 
+    local extraConfig=
     local extraConnector=
     if [[ "${excludeDefaultPort}" == "yes" ]]; then
-        for ((i = 1 ; i <= "${connectorCount}" ; i++));
-        do  
+        for ((i = 1; i <= "${connectorCount}"; i++)); do
             local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
             [[ "${portValue}" != "${DEFAULT_ACCESS_PORT}" && "${portValue}" != "${DEFAULT_RT_PORT}" ]] || continue
             extraConnector=$($LIBXML2_PATH --xpath '//Server/Service/Connector['$i']' ${filePath}/${fileName} 2>/dev/null)
-            setExtraConnector "${EXTRA_CONFIG_YAMLPATH}" "${extraConnector}" 
+            setExtraConnector "${EXTRA_CONFIG_YAMLPATH}" "${extraConnector}"
         done
     else
         extraConnector=$($LIBXML2_PATH --xpath '//Server/Service/Connector['$i']' ${filePath}/${fileName} 2>/dev/null)
@@ -3521,7 +3520,7 @@ migrateExtraConnectors () {
 }
 
 # Migrate connector configurations
-migrateConnectorConfig () {
+migrateConnectorConfig() {
     local i="$1"
     local protocolType="$2"
     local portValue="$3"
@@ -3533,10 +3532,10 @@ migrateConnectorConfig () {
     local connectorSendReasonPhraseYamlPath="$9"
     local connectorRelaxedPathCharsYamlPath="${10}"
     local connectorRelaxedQueryCharsYamlPath="${11}"
-    
+
     # migrate port
     setConnectorPort "${connectorPortYamlPath}" "${portValue}"
-    
+
     # migrate maxThreads
     local maxThreadValue=$(getXmlConnectorMaxThreads "$i" "${filePath}" "${fileName}")
     setConnectorMaxThread "${connectorMaxThreadYamlPath}" "${maxThreadValue}"
@@ -3544,7 +3543,7 @@ migrateConnectorConfig () {
     # migrate sendReasonPhrase
     local sendReasonPhraseValue=$(getXmlConnectorSendReasonPhrase "$i" "${filePath}" "${fileName}")
     setConnectorSendReasonPhrase "${connectorSendReasonPhraseYamlPath}" "${sendReasonPhraseValue}"
-    
+
     # migrate relaxedPathChars
     local relaxedPathCharsValue=$(getXmlConnectorRelaxedPathChars "$i" "${filePath}" "${fileName}")
     setConnectorRelaxedPathChars "${connectorRelaxedPathCharsYamlPath}" "\"${relaxedPathCharsValue}\""
@@ -3561,7 +3560,7 @@ migrateConnectorConfig () {
 }
 
 # Check for default port 8040 and 8081 in connectors and migrate
-migrateConnectorPort () {
+migrateConnectorPort() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
@@ -3575,8 +3574,7 @@ migrateConnectorPort () {
     local portYamlPath=
     local maxThreadYamlPath=
     local status=
-    for ((i = 1 ; i <= "${connectorCount}" ; i++));
-    do  
+    for ((i = 1; i <= "${connectorCount}"; i++)); do
         local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
         local protocolType=$(getXmlConnectorProtocol "$i" "${filePath}" "${fileName}")
         [[ "${protocolType}" == *AJP* ]] && continue
@@ -3591,14 +3589,13 @@ migrateConnectorPort () {
 }
 
 # migrate to extra, connector having default port and protocol is AJP
-migrateDefaultPortIfAjp () {
+migrateDefaultPortIfAjp() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
     local defaultPort="$4"
-    
-    for ((i = 1 ; i <= "${connectorCount}" ; i++));
-    do  
+
+    for ((i = 1; i <= "${connectorCount}"; i++)); do
         local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
         local protocolType=$(getXmlConnectorProtocol "$i" "${filePath}" "${fileName}")
         [[ "${protocolType}" != *AJP* ]] && continue
@@ -3609,7 +3606,7 @@ migrateDefaultPortIfAjp () {
 }
 
 # Comparing max threads in connectors
-compareMaxThreads () {
+compareMaxThreads() {
     local firstConnectorMaxThread="$1"
     local firstConnectorNode="$2"
     local secondConnectorMaxThread="$3"
@@ -3627,7 +3624,7 @@ compareMaxThreads () {
         local acPortValue=$(getXmlConnectorPort "${secondConnectorNode}" "${filePath}" "${fileName}")
         migrateConnectorConfig "${secondConnectorNode}" "${protocolType}" "${acPortValue}" "${AC_PORT_YAMLPATH}" "${AC_MAXTHREADS_YAMLPATH}" "${AC_EXTRACONFIG_YAMLPATH}" "${filePath}" "${fileName}" "${AC_SENDREASONPHRASE_YAMLPATH}"
     else
-        # maxThread is higher in SecondConnector, 
+        # maxThread is higher in SecondConnector,
         # Taking SecondConnector as Artifactory and firstConnector as Access
         local rtPortValue=$(getXmlConnectorPort "${secondConnectorNode}" "${filePath}" "${fileName}")
         migrateConnectorConfig "${secondConnectorNode}" "${protocolType}" "${rtPortValue}" "${RT_PORT_YAMLPATH}" "${RT_MAXTHREADS_YAMLPATH}" "${RT_EXTRACONFIG_YAMLPATH}" "${filePath}" "${fileName}" "${RT_SENDREASONPHRASE_YAMLPATH}" "${RT_RELAXEDPATHCHARS_YAMLPATH}" "${RT_RELAXEDQUERYCHARS_YAMLPATH}"
@@ -3637,7 +3634,7 @@ compareMaxThreads () {
 }
 
 # Check max threads exist to compare
-maxThreadsExistToCompare () {
+maxThreadsExistToCompare() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
@@ -3648,8 +3645,7 @@ maxThreadsExistToCompare () {
     local status=success
     local firstnode=fail
 
-    for ((i = 1 ; i <= "${connectorCount}" ; i++));
-        do 
+    for ((i = 1; i <= "${connectorCount}"; i++)); do
         local protocolType=$(getXmlConnectorProtocol "$i" "${filePath}" "${fileName}")
         if [[ ${protocolType} == *AJP* ]]; then
             # Migrate Connectors
@@ -3671,7 +3667,7 @@ maxThreadsExistToCompare () {
     # maxThreads is set, now compare MaxThreads
     if [[ "${status}" == "success" ]]; then
         compareMaxThreads "${firstConnectorMaxThread}" "${firstConnectorNode}" "${secondConnectorMaxThread}" "${secondConnectorNode}" "${filePath}" "${fileName}"
-    else 
+    else
         # Assume first connector is RT, maxThreads is not set in both connectors
         local rtPortValue=$(getXmlConnectorPort "${firstConnectorNode}" "${filePath}" "${fileName}")
         migrateConnectorConfig "${firstConnectorNode}" "${protocolType}" "${rtPortValue}" "${RT_PORT_YAMLPATH}" "${RT_MAXTHREADS_YAMLPATH}" "${RT_EXTRACONFIG_YAMLPATH}" "${filePath}" "${fileName}" "${RT_SENDREASONPHRASE_YAMLPATH}" "${RT_RELAXEDPATHCHARS_YAMLPATH}" "${RT_RELAXEDQUERYCHARS_YAMLPATH}"
@@ -3680,7 +3676,7 @@ maxThreadsExistToCompare () {
     fi
 }
 
-migrateExtraBasedOnNonAjpCount () {
+migrateExtraBasedOnNonAjpCount() {
     local nonAjpCount="$1"
     local filePath="$2"
     local fileName="$3"
@@ -3689,7 +3685,7 @@ migrateExtraBasedOnNonAjpCount () {
 
     local protocolType=$(getXmlConnectorProtocol "$i" "${filePath}" "${fileName}")
     if [[ "${protocolType}" == *AJP* ]]; then
-        if [[ "${nonAjpCount}" -eq 1  ]]; then
+        if [[ "${nonAjpCount}" -eq 1 ]]; then
             # migrateExtraConnectors
             migrateExtraConnectors "${filePath}" "${fileName}" "${connectorCount}" "no" "${i}"
             continue
@@ -3702,7 +3698,7 @@ migrateExtraBasedOnNonAjpCount () {
 }
 
 # find RT and AC Connector
-findRtAndAcConnector () {
+findRtAndAcConnector() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
@@ -3710,20 +3706,18 @@ findRtAndAcConnector () {
     local nonAjpCount=0
 
     # get the count of non AJP
-    for ((i = 1 ; i <= "${connectorCount}" ; i++));
-    do  
+    for ((i = 1; i <= "${connectorCount}"; i++)); do
         local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
         local protocolType=$(getXmlConnectorProtocol "$i" "${filePath}" "${fileName}")
-        [[ "${protocolType}" != *AJP* ]]  || continue
-        nonAjpCount=$((initialAjpCount+1))
+        [[ "${protocolType}" != *AJP* ]] || continue
+        nonAjpCount=$((initialAjpCount + 1))
         initialAjpCount="${nonAjpCount}"
     done
-    if [[ "${nonAjpCount}" -eq 1 ]]; then  
+    if [[ "${nonAjpCount}" -eq 1 ]]; then
         # Add the connector found as access and artifactory connectors
         # Mark port as 8040 for access
-        for ((i = 1 ; i <= "${connectorCount}" ; i++))
-        do  
-            migrateExtraBasedOnNonAjpCount "${nonAjpCount}" "${filePath}" "${fileName}" "${connectorCount}"  "$i"
+        for ((i = 1; i <= "${connectorCount}"; i++)); do
+            migrateExtraBasedOnNonAjpCount "${nonAjpCount}" "${filePath}" "${fileName}" "${connectorCount}" "$i"
             local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
             migrateConnectorConfig "$i" "${protocolType}" "${portValue}" "${RT_PORT_YAMLPATH}" "${RT_MAXTHREADS_YAMLPATH}" "${RT_EXTRACONFIG_YAMLPATH}" "${filePath}" "${fileName}" "${RT_SENDREASONPHRASE_YAMLPATH}" "${RT_RELAXEDPATHCHARS_YAMLPATH}" "${RT_RELAXEDQUERYCHARS_YAMLPATH}"
             migrateConnectorConfig "$i" "${protocolType}" "${portValue}" "${AC_PORT_YAMLPATH}" "${AC_MAXTHREADS_YAMLPATH}" "${AC_EXTRACONFIG_YAMLPATH}" "${filePath}" "${fileName}" "${AC_SENDREASONPHRASE_YAMLPATH}"
@@ -3745,47 +3739,44 @@ findRtAndAcConnector () {
 }
 
 # get the count of non AJP
-getCountOfNonAjp () {
+getCountOfNonAjp() {
     local port="$1"
     local connectorCount="$2"
     local filePath=$3
     local fileName=$4
     local initialNonAjpCount=0
 
-    for ((i = 1 ; i <= "${connectorCount}" ; i++));
-    do  
+    for ((i = 1; i <= "${connectorCount}"; i++)); do
         local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
         local protocolType=$(getXmlConnectorProtocol "$i" "${filePath}" "${fileName}")
         [[ "${portValue}" != "${port}" ]] || continue
-        [[ "${protocolType}" != *AJP* ]]  || continue
-        local nonAjpCount=$((initialNonAjpCount+1))
+        [[ "${protocolType}" != *AJP* ]] || continue
+        local nonAjpCount=$((initialNonAjpCount + 1))
         initialNonAjpCount="${nonAjpCount}"
     done
     echo -e "${nonAjpCount}"
 }
 
 # Find for access connector
-findAcConnector () {
+findAcConnector() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
-    
-    # get the count of non AJP 
+
+    # get the count of non AJP
     local nonAjpCount=$(getCountOfNonAjp "${DEFAULT_RT_PORT}" "${connectorCount}" "${filePath}" "${fileName}")
     if [[ "${nonAjpCount}" -eq 1 ]]; then
         # Add the connector found as access connector and mark port as that of connector
-        for ((i = 1 ; i <= "${connectorCount}" ; i++))
-        do  
+        for ((i = 1; i <= "${connectorCount}"; i++)); do
             migrateExtraBasedOnNonAjpCount "${nonAjpCount}" "${filePath}" "${fileName}" "${connectorCount}" "$i"
             local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
             if [[ "${portValue}" != "${DEFAULT_RT_PORT}" ]]; then
                 migrateConnectorConfig "$i" "${protocolType}" "${portValue}" "${AC_PORT_YAMLPATH}" "${AC_MAXTHREADS_YAMLPATH}" "${AC_EXTRACONFIG_YAMLPATH}" "${filePath}" "${fileName}" "${AC_SENDREASONPHRASE_YAMLPATH}"
-            fi   
+            fi
         done
     elif [[ "${nonAjpCount}" -gt 1 ]]; then
         # Take RT properties into access with 8040
-        for ((i = 1 ; i <= "${connectorCount}" ; i++))
-        do  
+        for ((i = 1; i <= "${connectorCount}"; i++)); do
             migrateExtraBasedOnNonAjpCount "${nonAjpCount}" "${filePath}" "${fileName}" "${connectorCount}" "$i"
             local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
             if [[ "${portValue}" == "${DEFAULT_RT_PORT}" ]]; then
@@ -3793,8 +3784,8 @@ findAcConnector () {
                 setConnectorPort "${AC_PORT_YAMLPATH}" "${DEFAULT_ACCESS_PORT}"
             fi
         done
-    elif [[ "${nonAjpCount}" -eq 0 ]]; then 
-        # Add RT connector details as access connector and mark port as 8040  
+    elif [[ "${nonAjpCount}" -eq 0 ]]; then
+        # Add RT connector details as access connector and mark port as 8040
         migrateConnectorPort "${filePath}" "${fileName}" "${connectorCount}" "${DEFAULT_RT_PORT}" "${AC_PORT_YAMLPATH}" "${AC_MAXTHREADS_YAMLPATH}" "${AC_EXTRACONFIG_YAMLPATH}" "${AC_SENDREASONPHRASE_YAMLPATH}"
         setConnectorPort "${AC_PORT_YAMLPATH}" "${DEFAULT_ACCESS_PORT}"
         # migrateExtraConnectors
@@ -3803,17 +3794,16 @@ findAcConnector () {
 }
 
 # Find for artifactory connector
-findRtConnector () {
+findRtConnector() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
-    
-    # get the count of non AJP 
+
+    # get the count of non AJP
     local nonAjpCount=$(getCountOfNonAjp "${DEFAULT_ACCESS_PORT}" "${connectorCount}" "${filePath}" "${fileName}")
     if [[ "${nonAjpCount}" -eq 1 ]]; then
         # Add the connector found as RT connector
-        for ((i = 1 ; i <= "${connectorCount}" ; i++))
-        do  
+        for ((i = 1; i <= "${connectorCount}"; i++)); do
             migrateExtraBasedOnNonAjpCount "${nonAjpCount}" "${filePath}" "${fileName}" "${connectorCount}" "$i"
             local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
             if [[ "${portValue}" != "${DEFAULT_ACCESS_PORT}" ]]; then
@@ -3822,8 +3812,7 @@ findRtConnector () {
         done
     elif [[ "${nonAjpCount}" -gt 1 ]]; then
         # Take access properties into artifactory with 8081
-        for ((i = 1 ; i <= "${connectorCount}" ; i++))
-        do  
+        for ((i = 1; i <= "${connectorCount}"; i++)); do
             migrateExtraBasedOnNonAjpCount "${nonAjpCount}" "${filePath}" "${fileName}" "${connectorCount}" "$i"
             local portValue=$(getXmlConnectorPort "$i" "${filePath}" "${fileName}")
             if [[ "${portValue}" == "${DEFAULT_ACCESS_PORT}" ]]; then
@@ -3831,7 +3820,7 @@ findRtConnector () {
                 setConnectorPort "${RT_PORT_YAMLPATH}" "${DEFAULT_RT_PORT}"
             fi
         done
-    elif [[ "${nonAjpCount}" -eq 0 ]]; then   
+    elif [[ "${nonAjpCount}" -eq 0 ]]; then
         # Add access connector details as RT connector and mark as ${DEFAULT_RT_PORT}
         migrateConnectorPort "${filePath}" "${fileName}" "${connectorCount}" "${DEFAULT_ACCESS_PORT}" "${RT_PORT_YAMLPATH}" "${RT_MAXTHREADS_YAMLPATH}" "${RT_EXTRACONFIG_YAMLPATH}" "${RT_SENDREASONPHRASE_YAMLPATH}" "${RT_RELAXEDPATHCHARS_YAMLPATH}" "${RT_RELAXEDQUERYCHARS_YAMLPATH}"
         setConnectorPort "${RT_PORT_YAMLPATH}" "${DEFAULT_RT_PORT}"
@@ -3840,12 +3829,11 @@ findRtConnector () {
     fi
 }
 
-checkForTlsConnector () {
+checkForTlsConnector() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
-    for ((i = 1 ; i <= "${connectorCount}" ; i++))
-    do
+    for ((i = 1; i <= "${connectorCount}"; i++)); do
         local sslProtocolValue=$($LIBXML2_PATH --xpath '//Server/Service/Connector['$i']/@sslProtocol' ${filePath}/${fileName} 2>/dev/null | awk -F"=" '{print $2}' | tr -d '"')
         if [[ "${sslProtocolValue}" == "TLS" ]]; then
             bannerImportant "NOTE: Ignoring TLS connector during migration, modify the system yaml to enable TLS. Original server.xml is saved in path [${filePath}/${fileName}]"
@@ -3856,12 +3844,11 @@ checkForTlsConnector () {
 }
 
 # set custom tomcat server Listeners to system.yaml
-setListenerConnector () {
+setListenerConnector() {
     local filePath="$1"
     local fileName="$2"
     local listenerCount="$3"
-    for ((i = 1 ; i <= "${listenerCount}" ; i++))
-    do 
+    for ((i = 1; i <= "${listenerCount}"; i++)); do
         local listenerConnector=$($LIBXML2_PATH --xpath '//Server/Listener['$i']' ${filePath}/${fileName} 2>/dev/null)
         local listenerClassName=$($LIBXML2_PATH --xpath '//Server/Listener['$i']/@className' ${filePath}/${fileName} 2>/dev/null | awk -F"=" '{print $2}' | tr -d '"')
         if [[ "${listenerClassName}" == *Apr* ]]; then
@@ -3870,7 +3857,7 @@ setListenerConnector () {
     done
 }
 # add custom tomcat server Listeners
-addTomcatServerListeners () {
+addTomcatServerListeners() {
     local filePath="$1"
     local fileName="$2"
     local listenerCount="$3"
@@ -3884,7 +3871,7 @@ addTomcatServerListeners () {
 }
 
 # server.xml migration operations
-xmlMigrateOperation () {
+xmlMigrateOperation() {
     local filePath="$1"
     local fileName="$2"
     local connectorCount="$3"
@@ -3899,7 +3886,7 @@ xmlMigrateOperation () {
         return
     fi
     addTomcatServerListeners "${filePath}" "${fileName}" "${listenerCount}"
-    # Migrate RT default port from connectors 
+    # Migrate RT default port from connectors
     migrateConnectorPort "${filePath}" "${fileName}" "${connectorCount}" "${DEFAULT_RT_PORT}" "${RT_PORT_YAMLPATH}" "${RT_MAXTHREADS_YAMLPATH}" "${RT_EXTRACONFIG_YAMLPATH}" "${RT_SENDREASONPHRASE_YAMLPATH}" "${RT_RELAXEDPATHCHARS_YAMLPATH}" "${RT_RELAXEDQUERYCHARS_YAMLPATH}"
     # Migrate to extra if RT default ports are AJP
     migrateDefaultPortIfAjp "${filePath}" "${fileName}" "${connectorCount}" "${DEFAULT_RT_PORT}"
@@ -3920,7 +3907,7 @@ xmlMigrateOperation () {
         # Only RT default port found,find AC connector
         logger "Found Artifactory default 8081 port"
         findAcConnector "${filePath}" "${fileName}" "${connectorCount}"
-    elif [[ "${AC_DEFAULTPORT_STATUS}" == "fail" && "${RT_DEFAULTPORT_STATUS}" == "fail" ]]; then    
+    elif [[ "${AC_DEFAULTPORT_STATUS}" == "fail" && "${RT_DEFAULTPORT_STATUS}" == "fail" ]]; then
         # RT and AC default port not found, find connector
         logger "Artifactory 8081 and Access 8040 default port are not found"
         findRtAndAcConnector "${filePath}" "${fileName}" "${connectorCount}"
@@ -3928,7 +3915,7 @@ xmlMigrateOperation () {
 }
 
 # get count of connectors
-getXmlConnectorCount () {
+getXmlConnectorCount() {
     local filePath="$1"
     local fileName="$2"
     local count=$($LIBXML2_PATH --xpath 'count(/Server/Service/Connector)' ${filePath}/${fileName})
@@ -3936,7 +3923,7 @@ getXmlConnectorCount () {
 }
 
 # get count of listener connectors
-getTomcatServerListenersCount () {
+getTomcatServerListenersCount() {
     local filePath="$1"
     local fileName="$2"
     local count=$($LIBXML2_PATH --xpath 'count(/Server/Listener)' ${filePath}/${fileName})
@@ -3944,7 +3931,7 @@ getTomcatServerListenersCount () {
 }
 
 # Migrate server.xml configuration to system.yaml
-migrateXmlFile () {
+migrateXmlFile() {
     local xmlFiles=
     local fileName=
     local filePath=
@@ -3996,10 +3983,10 @@ migrateXmlFile () {
         xmlMigrateOperation "${sourceFilePath}" "${fileName}" "${connectorCount}" "${listenerCount}"
     else
         logger "File [${fileName}] is not found in path [${sourceFilePath}] to migrate"
-    fi   
+    fi
 }
 
-compareArtifactoryUser () {
+compareArtifactoryUser() {
     local property="$1"
     local oldPropertyValue="$2"
     local newPropertyValue="$3"
@@ -4014,7 +4001,7 @@ compareArtifactoryUser () {
     fi
 }
 
-migrateReplicator () {
+migrateReplicator() {
     local property="$1"
     local oldPropertyValue="$2"
     local yamlPath="$3"
@@ -4023,7 +4010,7 @@ migrateReplicator () {
     logger "Setting [${yamlPath}] with value of the property [${property}] in system.yaml"
 }
 
-compareJavaOptions () {
+compareJavaOptions() {
     local property="$1"
     local oldPropertyValue="$2"
     local newPropertyValue="$3"
@@ -4038,10 +4025,8 @@ compareJavaOptions () {
 
     oldJavaOption=$(echo "${oldPropertyValue}" | awk 'BEGIN{FS=OFS="\""}{for(i=2;i<NF;i+=2)gsub(/ /,"@",$i)}1')
     newJavaOption=$(echo "${newPropertyValue}" | awk 'BEGIN{FS=OFS="\""}{for(i=2;i<NF;i+=2)gsub(/ /,"@",$i)}1')
-    for oldJavaOption in $oldPropertyValue;
-    do
-        for newJavaOption in $newPropertyValue;
-        do
+    for oldJavaOption in $oldPropertyValue; do
+        for newJavaOption in $newPropertyValue; do
             if [[ "${oldJavaOption}" == "${newJavaOption}" ]]; then
                 check=true
                 break
@@ -4069,7 +4054,7 @@ compareJavaOptions () {
     [[ "${success}" == "true" && "${check}" == "true" ]] && logger "No change in property [JAVA_OPTIONS] value in [${sourceFile}] to migrate"
 }
 
-defaultPropertyMigrate () {
+defaultPropertyMigrate() {
     local entry="$1"
     local sourceFile="$2"
     local targetFile="$3"
@@ -4078,7 +4063,7 @@ defaultPropertyMigrate () {
     local oldPropertyValue=
     local newPropertyValue=
     local check=false
-    
+
     local targetDataDir=
 
     local yamlPath=$(getFirstEntry "${entry}")
@@ -4113,7 +4098,7 @@ defaultPropertyMigrate () {
     fi
 }
 
-migrateDefaultFile () {
+migrateDefaultFile() {
     local oldDefaultFilePath=
     local newDefaultFilePath=
     local oldfileName=
@@ -4124,7 +4109,7 @@ migrateDefaultFile () {
     local targetFilePath=
     local sourceFile=
     local targetFile=
-    
+
     retrieveYamlValue "migration.defaultFile" "defaultFile" "Skip"
     defaultFile="${YAML_VALUE}"
     if [[ -z "${defaultFile}" ]]; then
@@ -4162,7 +4147,10 @@ migrateDefaultFile () {
     if [[ "${INSTALLER}" == "${ZIP_TYPE}" ]]; then
         targetFilePath="${APP_DIR}/../${newDefaultFilePath}"
     else
-        targetDataDir="`cd "${NEW_DATA_DIR}"/../;pwd`"
+        targetDataDir="$(
+            cd "${NEW_DATA_DIR}"/../
+            pwd
+        )"
         targetFilePath="${targetDataDir}/${newDefaultFilePath}"
     fi
     targetFile="${targetFilePath}/${newFileName}"
@@ -4175,8 +4163,7 @@ migrateDefaultFile () {
     retrieveYamlValue "migration.defaultFile.map" "map" "Warning"
     map="${YAML_VALUE}"
     [[ -z "${map}" ]] && continue
-    for entry in $map;
-    do
+    for entry in $map; do
         if [[ "$(checkMapEntry "${entry}")" == "true" ]]; then
             defaultPropertyMigrate "${entry}" "${sourceFile}" "${targetFile}"
         else
@@ -4187,7 +4174,7 @@ migrateDefaultFile () {
 
 # comment node.id in system.yaml
 # Add a commented Line above the node.id in system.yaml
-commentNodeId () {
+commentNodeId() {
     local filePath=
     local fileName=
     local idKey=
@@ -4213,7 +4200,7 @@ commentNodeId () {
     fi
 }
 
-artifactoryInfoMessage () {
+artifactoryInfoMessage() {
 
     if [[ "${INSTALLER}" == "${COMPOSE_TYPE}" || "${INSTALLER}" == "${HELM_TYPE}" ]]; then
         addText "# yamlFile was generated from db.properties,replicator.yaml and ha-node.properties config files." "${SYSTEM_YAML_PATH}"
@@ -4223,7 +4210,7 @@ artifactoryInfoMessage () {
 
 }
 
-replicatorProfiling () {
+replicatorProfiling() {
 
     if [[ "${key}" == "profilingDisabled" ]]; then
         if [[ ! -z "${value}" ]]; then
@@ -4236,7 +4223,7 @@ replicatorProfiling () {
     fi
 }
 
-setHaEnabled_hook () {
+setHaEnabled_hook() {
     local filePath="$1"
     if [[ "$(checkFileExists "${NEW_DATA_DIR}/${filePath}/ha-node.properties")" == "true" ]]; then
         setSystemValue "shared.node.haEnabled" "true" "${SYSTEM_YAML_PATH}"
@@ -4244,7 +4231,7 @@ setHaEnabled_hook () {
     fi
 }
 
-removeFileOperation () {
+removeFileOperation() {
     local backupDir="$1"
     local file="$2"
     if [[ "$(checkFileExists "${file}")" == "true" ]]; then
@@ -4255,7 +4242,7 @@ removeFileOperation () {
     fi
 }
 
-_createBackupOfLogBackDir () {
+_createBackupOfLogBackDir() {
     local backupDir="$1"
     local accessLogbackFile="${NEW_DATA_DIR}/etc/access/logback.xml"
     local artiLogbackFile="${NEW_DATA_DIR}/etc/artifactory/logback.xml"
@@ -4265,18 +4252,17 @@ _createBackupOfLogBackDir () {
         effectiveUser="${JF_USER}"
         effectiveGroup="${JF_USER}"
     elif [[ "${INSTALLER}" == "${DEB_TYPE}" || "${INSTALLER}" == "${RPM_TYPE}" ]]; then
-        effectiveUser="${USER_TO_CHECK}" 
+        effectiveUser="${USER_TO_CHECK}"
         effectiveGroup="${GROUP_TO_CHECK}"
     fi
     removeSoftLinkAndCreateDir "${backupDir}/logbackXmlFiles" "${effectiveUser}" "${effectiveGroup}" "yes"
-    removeSoftLinkAndCreateDir "${backupDir}/logbackXmlFiles/access" "${effectiveUser}" "${effectiveGroup}" "yes" 
+    removeSoftLinkAndCreateDir "${backupDir}/logbackXmlFiles/access" "${effectiveUser}" "${effectiveGroup}" "yes"
     removeSoftLinkAndCreateDir "${backupDir}/logbackXmlFiles/artifactory" "${effectiveUser}" "${effectiveGroup}" "yes"
     removeFileOperation "${backupDir}/logbackXmlFiles/access" "${accessLogbackFile}"
     removeFileOperation "${backupDir}/logbackXmlFiles/artifactory" "${artiLogbackFile}"
 }
 
-
-_createBackupOfReplicatorRtYaml () {
+_createBackupOfReplicatorRtYaml() {
     local backupDir="$1"
     local replicatorRtYamlFile="${NEW_DATA_DIR}/etc/replicator/replicator.artifactory.yaml"
     local effectiveUser=
@@ -4285,20 +4271,20 @@ _createBackupOfReplicatorRtYaml () {
         effectiveUser="${JF_USER}"
         effectiveGroup="${JF_USER}"
     elif [[ "${INSTALLER}" == "${DEB_TYPE}" || "${INSTALLER}" == "${RPM_TYPE}" ]]; then
-        effectiveUser="${USER_TO_CHECK}" 
+        effectiveUser="${USER_TO_CHECK}"
         effectiveGroup="${GROUP_TO_CHECK}"
     fi
     removeSoftLinkAndCreateDir "${backupDir}/replicatorYamlFile" "${effectiveUser}" "${effectiveGroup}" "yes"
     removeFileOperation "${backupDir}/replicatorYamlFile" "${replicatorRtYamlFile}"
 }
 
-backupFiles_hook () {
-    local backupDirectory="$1" 
+backupFiles_hook() {
+    local backupDirectory="$1"
     _createBackupOfLogBackDir "${backupDirectory}"
     _createBackupOfReplicatorRtYaml "${backupDirectory}"
 }
 
-migrateArtifactory () {
+migrateArtifactory() {
     creationMigrateLog
     _pauseExecution "creationMigrateLog"
     checkArtifactoryVersion

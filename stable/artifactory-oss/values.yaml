@@ -65,11 +65,13 @@ artifactory:
   postgresql:
     enabled: true
     securityContext:
-      enabled: false
-      fsGroup: ""
+      enabled:
+        false
+        #      fsGroup: ""
     containerSecurityContext:
-      enabled: false
-      runAsUser: "auto"
+      enabled:
+        false
+        #      runAsUser: "auto"
     podSecurityContext:
       enabled: false
     volumePermissions:

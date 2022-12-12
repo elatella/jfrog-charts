@@ -771,6 +771,7 @@ artifactory:
 
   statefulset:
     annotations: {}
+    securityContext: {}
 
   ## The following setting are to configure a dedicated Ingress object for Replicator service
   replicator:
@@ -1036,18 +1037,17 @@ artifactory:
   ## The following Java options are passed to the java process running Artifactory.
   ## You should set them according to the resources set above
   javaOpts:
-    {}
     # xms: "1g"
     # xmx: "2g"
-    #    jmx:
-    #      enabled: false
-    #      port: 9010
-    #      host:
-    #      ssl: false
-    # When authenticate is true, accessFile and passwordFile are required
-    #      authenticate: false
-    #      accessFile:
-    #      passwordFile:
+    jmx:
+      enabled: false
+      port: 9010
+      host:
+      ssl: false
+      # When authenticate is true, accessFile and passwordFile are required
+      authenticate: false
+      accessFile:
+      passwordFile:
     # corePoolSize: 24
     # other: ""
 
@@ -1820,11 +1820,10 @@ waitForDatabase: true
 postgresql:
   enabled: true
   securifyContext:
-    enabled: false
-    fsGroup: ""
+    {}
+    #    enabled: false
   containerSecurityContext:
     enabled: false
-    runAsUser: "auto"
   podSecurityContext:
     enabled: false
   volumePermission:
