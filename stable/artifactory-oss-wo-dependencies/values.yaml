@@ -13,8 +13,8 @@ global:
   ## This applies also for nginx images (.Values.nginx.image.tag)
   versions: {}
   #   artifactory:
-  # joinKey:
-  # masterKey:
+  joinKey: "42d3f94d4d1432554478a2b7239c6feeff5e39d14fb81468376810ffba1bfdbf"
+  masterKey: "289129976408cd3b5ad4d951d108c5a6f1d31a131a957e0072c8f96521f036ab"
   # joinKeySecretName:
   # masterKeySecretName:
 
@@ -174,7 +174,7 @@ autoscaling:
 logger:
   image:
     registry: releases-docker.jfrog.io
-    repository: ubi8/ubi-minimal
+    repository: jfrog/artifactory-oss
     tag: 8.6-941
 
 ## You can use a pre-existing secret with keys license_token and iam_role by specifying licenseConfigSecretName
@@ -291,7 +291,7 @@ artifactory:
   # Note that by default we use appVersion to get image tag/version
   image:
     registry: releases-docker.jfrog.io
-    repository: jfrog/artifactory-pro
+    repository: jfrog/artifactory-oss
     # tag:
     pullPolicy: IfNotPresent
   labels: {}
@@ -781,13 +781,13 @@ artifactory:
     extraEnvironmentVariables:
       # - name: MY_ENV_VAR
       #   value: ""
-    resources: {}
-    #  requests:
-    #    memory: "100Mi"
-    #    cpu: "100m"
-    #  limits:
-    #    memory: "1Gi"
-    #    cpu: "1"
+    resources:
+      requests:
+        memory: "1Gi"
+        cpu: "250m"
+      limits:
+        memory: "4Gi"
+        cpu: "1"
 
     # Add lifecycle hooks for replicator container
     lifecycle:
@@ -800,7 +800,7 @@ artifactory:
       #     command: ["/bin/sh","-c","echo Hello from the preStop handler"]
 
     ingress:
-      enabled: true
+      enabled: false
       name:
       hosts: []
       className: ""
@@ -842,14 +842,12 @@ artifactory:
   internalPort: 8082
   externalArtifactoryPort: 8081
   internalArtifactoryPort: 8081
-  uid: 1030
-  gid: 1030
   # fsGroupChangePolicy: "Always"
   terminationGracePeriodSeconds: 30
 
   ## By default, the Artifactory StatefulSet is created with a securityContext that sets the `runAsUser` and the `fsGroup` to the `artifactory.uid` value.
   ## If you want to disable the securityContext for the Artifactory StatefulSet, set this tag to false
-  setSecurityContext: true
+  setSecurityContext: false
 
   livenessProbe:
     enabled: true
@@ -1038,17 +1036,18 @@ artifactory:
   ## The following Java options are passed to the java process running Artifactory.
   ## You should set them according to the resources set above
   javaOpts:
+    {}
     # xms: "1g"
     # xmx: "2g"
-    jmx:
-      enabled: false
-      port: 9010
-      host:
-      ssl: false
-      # When authenticate is true, accessFile and passwordFile are required
-      authenticate: false
-      accessFile:
-      passwordFile:
+    #    jmx:
+    #      enabled: false
+    #      port: 9010
+    #      host:
+    #      ssl: false
+    # When authenticate is true, accessFile and passwordFile are required
+    #      authenticate: false
+    #      accessFile:
+    #      passwordFile:
     # corePoolSize: 24
     # other: ""
 
@@ -1464,8 +1463,10 @@ nginx:
   image:
     registry: releases-docker.jfrog.io
     repository: jfrog/nginx-artifactory-pro
+    # repository: docker.io/nginxinc/nginx-unprivileged
     # tag:
     pullPolicy: IfNotPresent
+    tag: "latest"
 
   # Priority Class name to be used in deployment if provided
   priorityClassName:
@@ -1715,11 +1716,11 @@ nginx:
   http:
     enabled: true
     externalPort: 80
-    internalPort: 80
+    internalPort: 8080
   https:
     enabled: true
     externalPort: 443
-    internalPort: 443
+    internalPort: 8443
 
   ssh:
     internalPort: 1339
@@ -1818,12 +1819,24 @@ waitForDatabase: true
 ## ref: https://github.com/bitnami/charts/blob/master/bitnami/postgresql/README.md
 postgresql:
   enabled: true
+  securifyContext:
+    enabled: false
+    fsGroup: ""
+  containerSecurityContext:
+    enabled: false
+    runAsUser: "auto"
+  podSecurityContext:
+    enabled: false
+  volumePermission:
+    enabled: false
+  shmVolume:
+    enabled: false
   image:
     registry: releases-docker.jfrog.io
     repository: bitnami/postgresql
     tag: 13.4.0-debian-10-r39
   postgresqlUsername: artifactory
-  postgresqlPassword: ""
+  postgresqlPassword: "o4Ls6bY8kh6TvJ"
   postgresqlDatabase: artifactory
   postgresqlExtendedConf:
     listenAddresses: "*"
@@ -1873,6 +1886,10 @@ database:
   #  url:
   #    name: "rds-artifactory"
   #    key: "db-url"
+
+## This key is required for upgrades to protect old PostgreSQL chart's breaking changes.
+databaseUpgradeReady: "yes"
+unifiedUpgradeAllowed: true
 
 # Filebeat Sidecar container
 ## The provided filebeat configuration is for Artifactory logs. It assumes you have a logstash installed and configured properly.
