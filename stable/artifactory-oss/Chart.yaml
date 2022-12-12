@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: 7.47.11
 dependencies:
   - name: artifactory
-    repository: file://charts/artifactory
+    repository: file://stable/artifactory-oss
     version: 107.47.11
 description: JFrog Artifactory OSS
 home: https://www.jfrog.com/artifactory/
