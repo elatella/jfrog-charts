@@ -1,0 +1,31 @@
+---
+# Source: artifactory/templates/nginx-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-artifactory-nginx
+  labels:
+    app: artifactory
+    chart: artifactory-107.47.11
+    component: nginx
+    heritage: Helm
+    release: test
+spec:
+  type: LoadBalancer
+  
+  externalTrafficPolicy: Cluster
+  ports:
+  # DEPRECATION NOTE: The following is to maintain support for values pre 1.3.0 and
+  # will be cleaned up in a later version
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  - port: 443
+    targetPort: 8443
+    protocol: TCP
+    name: https
+  selector:
+    app: artifactory
+    component: nginx
+    release: test

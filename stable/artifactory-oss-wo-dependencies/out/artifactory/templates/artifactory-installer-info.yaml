@@ -1,0 +1,14 @@
+---
+# Source: artifactory/templates/artifactory-installer-info.yaml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: test-artifactory-installer-info
+  labels:
+    app: artifactory
+    chart: artifactory-107.47.11
+    heritage: Helm
+    release: test
+data:
+  installer-info.json: |
+    {"productId": "Helm_artifactory/107.47.11", "features": [ { "featureId": "Platform/kubernetes"}]}
