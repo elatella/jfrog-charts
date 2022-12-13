@@ -428,8 +428,10 @@ artifactory:
     ## Extra pre-start command in migration Init Container to install JDBC driver for MySql/MariaDb/Oracle
     # preStartCommand: "mkdir -p /opt/jfrog/artifactory/var/bootstrap/artifactory/tomcat/lib; cd /opt/jfrog/artifactory/var/bootstrap/artifactory/tomcat/lib && curl -o /opt/jfrog/artifactory/var/bootstrap/artifactory/tomcat/lib/mysql-connector-java-5.1.41.jar https://jcenter.bintray.com/mysql/mysql-connector-java/5.1.41/mysql-connector-java-5.1.41.jar"
 
+
+
   ## Add custom init containers execution before predefined init containers
-  customInitContainersBegin: |
+  #customInitContainersBegin: |
   #  - name: "custom-setup"
   #    image: "{{ .Values.initContainerImage }}"
   #    imagePullPolicy: "{{ .Values.artifactory.image.pullPolicy }}"
@@ -448,7 +450,7 @@ artifactory:
   #        name: artifactory-volume
 
   ## Add custom init containers execution after predefined init containers
-  customInitContainers: |
+  #customInitContainers: |
   #  - name: "custom-systemyaml-setup"
   #    image: "{{ .Values.initContainerImage }}"
   #    imagePullPolicy: "{{ .Values.artifactory.image.pullPolicy }}"
@@ -468,7 +470,7 @@ artifactory:
 
   ## Add custom sidecar containers
   # - The provided example uses a custom volume (customVolumes)
-  customSidecarContainers: |
+  #customSidecarContainers: |
   #  - name: "sidecar-list-etc"
   #    image: "{{ .Values.initContainerImage }}"
   #    imagePullPolicy: "{{ .Values.artifactory.image.pullPolicy }}"
@@ -498,13 +500,13 @@ artifactory:
 
   ## Add custom volumes
   # If .Values.artifactory.unifiedSecretInstallation is true then secret name should be '{{ template "artifactory.name" . }}-unified-secret'
-  customVolumes: |
+  #customVolumes: |
   #  - name: custom-script
   #    configMap:
   #      name: custom-script
 
   ## Add custom volumesMounts
-  customVolumeMounts: |
+  #customVolumeMounts: |
   #  - name: custom-script
   #    mountPath: "/scripts/script.sh"
   #    subPath: script.sh
@@ -538,7 +540,7 @@ artifactory:
   configMapName:
 
   # Add any list of configmaps to Artifactory
-  configMaps: |
+  #configMaps: |
   #  posthook-start.sh: |-
   #    echo "This is a post start script"
   #  posthook-end.sh: |-
@@ -1027,18 +1029,16 @@ artifactory:
     annotations: {}
   ## Uncomment the following resources definitions or pass them from command line
   ## to control the cpu and memory resources allocated by the Kubernetes cluster
-  resources: {}
-  #  requests:
-  #    memory: "1Gi"
-  #    cpu: "500m"
-  #  limits:
-  #    memory: "2Gi"
-  #    cpu: "1"
-  ## The following Java options are passed to the java process running Artifactory.
-  ## You should set them according to the resources set above
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "2"
+    limits:
+      memory: "6Gi"
+      cpu: "4"
   javaOpts:
-    # xms: "1g"
-    # xmx: "2g"
+    xms: "4g"
+    xmx: "4g"
     jmx:
       enabled: false
       port: 9010
