@@ -130,7 +130,7 @@ ingress:
     # nginx.ingress.kubernetes.io/proxy-body-size: "0"
     route.openshift.io/termination: edge
   labels:
-    public: true
+    public: "true"
   # traffic-type: external
   # traffic-type: internal
   tls: []
