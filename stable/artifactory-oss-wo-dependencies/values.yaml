@@ -115,20 +115,22 @@ ingress:
   defaultBackend:
     enabled: true
   # Used to create an Ingress record.
-  hosts: []
-  hostname: https://artifactory.ocp.cloudscale.puzzle.ch/
+  hosts:
+    - artifactory.ocp.cloudscale.puzzle.ch/
   routerPath: /
-  artifactoryPath: /artifactory/
-  className: ""
+  artifactoryPath:
+    /artifactory/
+    #  className: ""
   annotations:
     kubernetes.io/ingress.class: nginx
     # nginx.ingress.kubernetes.io/configuration-snippet: |
     #   proxy_pass_header   Server;
     #   proxy_set_header    X-JFrog-Override-Base-Url https://<artifactory-domain>;
     kubernetes.io/tls-acme: "true"
-  # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    route.openshift.io/termination: edge
   labels:
-  public: true
+    public: true
   # traffic-type: external
   # traffic-type: internal
   tls: []
@@ -805,8 +807,9 @@ artifactory:
     ingress:
       enabled: false
       name:
-      hosts: []
-      className: ""
+      hosts:
+        []
+        #      className: ""
       annotations:
         {}
         # kubernetes.io/ingress.class: nginx
