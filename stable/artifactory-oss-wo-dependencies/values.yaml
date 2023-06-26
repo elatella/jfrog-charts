@@ -1466,7 +1466,7 @@ nginx:
   image:
     registry: releases-docker.jfrog.io
     repository: jfrog/nginx-artifactory-pro
-    # repository: docker.io/nginxinc/nginx-unprivileged
+    # repository: registry.puzzle.ch/docker.io/nginxinc-nginx-unprivileged
     # tag:
     pullPolicy: IfNotPresent
     tag: "latest"
